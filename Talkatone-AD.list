@@ -1,1 +1,18 @@
+# NAME: Talkatone-AD
+# AUTHOR: Egg
+# UPDATED: 2024-05-26 12:16
+# DESCRIPTION: 拦截Talkatone-AD
 
+DOMAIN-SUFFIX,ads.inmobi.com
+DOMAIN-SUFFIX,tappx.com
+DOMAIN-SUFFIX,criteo.com
+DOMAIN-SUFFIX,pubmatic.com
+DOMAIN-SUFFIX,smaato.net
+DOMAIN-SUFFIX,doubleclick.net
+DOMAIN-SUFFIX,amazon-adsystem.com
+DOMAIN-SUFFIX,googlesyndication.com
+DOMAIN-SUFFIX,analytics-services.com
+DOMAIN-KEYWORD,googleads
+DOMAIN-SUFFIX,adsappier.com
+DOMAIN-SUFFIX,appier.net
+DOMAIN-SUFFIX,appiersig.com
