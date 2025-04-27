@@ -1,0 +1,40 @@
+payload:
+    - DOMAIN-SUFFIX,ad88.eu.org
+    - DOMAIN-SUFFIX,ad88.eu.org
+    - DOMAIN,yf.kover.eu.org
+    - DOMAIN-SUFFIX,jsdelivr.net
+    - DOMAIN-SUFFIX,saturday.video
+    - DOMAIN-SUFFIX,cloudflare.com
+    - DOMAIN-SUFFIX,999888123.xyz
+    - DOMAIN-SUFFIX,444461.xyz
+    - DOMAIN-SUFFIX,nanflix.net
+    - DOMAIN-SUFFIX,tanhuatv.site
+    - DOMAIN-SUFFIX,home.js001.com
+    - IP-CIDR,139.185.42.4/8, 全球直连,no-resolve
+
+
+
+  - DOMAIN-SUFFIX,ad88.eu.org, 全球直连
+  - DOMAIN,yf.kover.eu.org, 全球直连
+  - DOMAIN-SUFFIX,jsdelivr.net, 全球直连
+  - DOMAIN-SUFFIX,saturday.video, 全球直连
+  - DOMAIN-SUFFIX,cloudflare.com, 全球直连
+  - DOMAIN-SUFFIX,999888123.xyz, 全球直连
+  - DOMAIN-SUFFIX,444461.xyz, 全球直连
+  - DOMAIN-SUFFIX,nanflix.net, 全球直连
+  - DOMAIN-SUFFIX,tanhuatv.site, 全球直连
+  - DOMAIN-SUFFIX,home.js001.com, 全球直连
+  - IP-CIDR,139.185.42.4/8, 全球直连,no-resolve
+
+
+
+  - DOMAIN,services.googleapis.cn, 节点选择
+  - DOMAIN-SUFFIX,temp-number.com, 节点选择
+  - DOMAIN-SUFFIX,nebula-media.org, 香港节点
+  - DOMAIN,services.googleapis.cn, 节点选择
+  - DOMAIN,xn--ngstr-lra8j.com, 节点选择
+  - DOMAIN-SUFFIX,coemn.com, 节点选择
+  - DOMAIN-SUFFIX,embyplus.org, 节点选择
+  - DOMAIN-SUFFIX,cc.embycc.link, 节点选择
+  - DOMAIN-SUFFIX,xn--gmq396grzd.com, 节点选择
+  - DOMAIN-SUFFIX,dot.clashmi.app, 节点选择
