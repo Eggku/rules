@@ -1,11 +1,12 @@
 payload:
-    - ad88.eu.org
-    - yf.kover.eu.org
-    - jsdelivr.net
-    - saturday.video
-    - cloudflare.com
-    - 999888123.xyz
-    - 444461.xyz
-    - nanflix.net
-    - tanhuatv.site
-    - home.js001.com
+    - DOMAIN-SUFFIX,ad88.eu.org
+    - DOMAIN,yf.kover.eu.org
+    - DOMAIN-SUFFIX,jsdelivr.net
+    - DOMAIN-SUFFIX,saturday.video
+    - DOMAIN-SUFFIX,cloudflare.com
+    - DOMAIN-SUFFIX,999888123.xyz
+    - DOMAIN-SUFFIX,444461.xyz
+    - DOMAIN-SUFFIX,nanflix.net
+    - DOMAIN-SUFFIX,tanhuatv.site
+    - DOMAIN-SUFFIX,home.js001.com
+    - IP-CIDR,139.185.42.4/8,no-resolve
