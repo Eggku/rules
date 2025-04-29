@@ -1,5 +1,5 @@
 payload:
-    - ad88.eu.org
+    - +.ad88.eu.org
     - +.kover.eu.org
     - +.jsdelivr.net
     - +.saturdayvideo.top
@@ -9,3 +9,5 @@ payload:
     - +.nanflix.net
     - +.tanhuatv.site
     - +.js001.com
+    - speedtest.net
+    - speedtest.cn
