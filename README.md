@@ -11,22 +11,16 @@
   <img src="https://via.placeholder.com/800x300.png?text=规则拓扑示意图" width="80%">
 </div>
 
-## 📦 快速接入
-
-域名示例格式：
 payload:
-  - "example.com"          # 普通域名
-  - "+.google.com"         # 通配域名
-  - "facebook.com"         # 根域名
-  - "+.fbcdn.net"             # 多子域名通配
+  - "example.com"          # 精确匹配
+  - "+.google.com"         # 通配所有子域名
+  - "facebook.com"         # 根域名匹配
+  - "+.fbcdn.net"          # 多级子域名匹配
   - "api.openai.com"       # 指定子域名
 
-    ip示例格式：
-payload:
-  - 162.244.34.0/24
-  - 178.249.213.0/24
+## 📦 快速接入
 
-使用示例
+```yaml
 # 在Clash配置文件中添加如下内容
 rule-providers:
   # 域名规则集
