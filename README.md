@@ -13,7 +13,20 @@
 
 ## 📦 快速接入
 
-```yaml
+域名示例格式：
+payload:
+  - "example.com"          # 普通域名
+  - "+.google.com"         # 通配域名
+  - "facebook.com"         # 根域名
+  - "+.fbcdn.net"             # 多子域名通配
+  - "api.openai.com"       # 指定子域名
+
+    ip示例格式：
+payload:
+  - 162.244.34.0/24
+  - 178.249.213.0/24
+
+使用示例
 # 在Clash配置文件中添加如下内容
 rule-providers:
   # 域名规则集
