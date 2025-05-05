@@ -1,37 +1,53 @@
-# 🚀 Mihomo规则集转换工具指南
+<h1 align="center">
+  <br>
+  <img src="https://raw.githubusercontent.com/yourname/repo/main/assets/logo.png" alt="Mihomo Rules" width="200">
+  <br>
+  Mihomo 规则集转换工具
+  <br>
+</h1>
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/yourname/repo/convert.yml?label=自动转换)
-![License](https://img.shields.io/badge/license-MIT-blue)
-![Latest Version](https://img.shields.io/badge/版本-v1.2.0-green)
+<div align="center">
 
-本仓库提供高效的规则集转换方案，可将YAML/TXT规则文件转换为Mihomo专用的.mrs格式。
+[![GitHub release](https://img.shields.io/github/v/release/yourname/repo?style=flat-square)](https://github.com/yourname/repo/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/yourname/repo/convert.yml?logo=github&style=flat-square)](https://github.com/yourname/repo/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
-📌 ​**​[立即下载最新规则集](https://github.com/yourname/repo/releases/latest)​**​
+</div>
 
-## 📖 目录
+<div align="center">
+  <img src="https://raw.githubusercontent.com/yourname/repo/main/assets/demo.gif" alt="Demo" width="600">
+</div>
 
-- [工具特性](#-工具特性)
-- [快速开始](#-快速开始)
-- [文件结构](#-文件结构)
-- [配置示例](#-配置示例)
-- [注意事项](#⚠️-注意事项)
-- [贡献指南](#-贡献指南)
-- [许可证](#-许可证)
+## 📚 目录
 
-## 🌟 工具特性
+- [✨ 功能特性](#-功能特性)
+- [⚡ 快速开始](#-快速开始)
+- [📁 文件结构](#-文件结构)
+- [🎯 使用示例](#-使用示例)
+- [⚙️ 配置说明](#️-配置说明)
+- [🚨 注意事项](#-注意事项)
+- [🤖 自动化](#-自动化)
+- [💡 贡献指南](#-贡献指南)
+- [📜 许可证](#-许可证)
 
-- 双模式转换支持：​**Domain规则**与**IP-CIDR规则**​
-- 多格式输入：YAML结构化配置 / TXT文本清单
-- 自动化集成：GitHub Actions原生支持
-- 开箱即用：预生成规则文件即刻部署
+## ✨ 功能特性
 
-## 🚦 快速开始
+<div class="feature-grid">
 
-### 基础命令
+| ​**多格式支持**​          | ​**智能转换**​              | ​**生产就绪**​          |
+|-------------------------|--------------------------|-----------------------|
+| ![YAML](https://img.shields.io/badge/YAML-FF6F00?logo=yaml) 域名规则 | 自动检测规则类型          | 开箱即用的.mrs文件    |
+| ![TXT](https://img.shields.io/badge/Text-000000?logo=text) IP-CIDR规则 | 自动清理无效条目          | 无缝对接Mihomo配置    |
+
+</div>
+
+## ⚡ 快速开始
+
+### 基础转换命令
 
 ```bash
 # 转换域名规则
-mihomo convert-ruleset domain yaml 输入文件.yaml 输出文件.mrs
+mihomo convert-ruleset domain yaml input.yaml output.mrs
 
 # 转换IP-CIDR规则
-mihomo convert-ruleset ipcidr text 输入文件.txt 输出文件.mrs
+mihomo convert-ruleset ipcidr text input.txt output.mrs
