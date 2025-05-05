@@ -11,12 +11,13 @@
   <img src="https://via.placeholder.com/800x300.png?text=规则拓扑示意图" width="80%">
 </div>
 
-payload:
-  - "example.com"          # 精确匹配
-  - "+.google.com"         # 通配所有子域名
-  - "facebook.com"         # 根域名匹配
-  - "+.fbcdn.net"          # 多级子域名匹配
-  - "api.openai.com"       # 指定子域名
+`payload:`
+
+  - `"example.com"          # 精确匹配`
+  - `"+.google.com"         # 通配所有子域名`
+  - `"facebook.com"        # 根域名匹配`
+  - `"+.fbcdn.net"          # 多级子域名匹配`
+  - `"api.openai.com"       # 指定子域名`
 
 ## 📦 快速接入
 
@@ -40,3 +41,4 @@ rule-providers:
 rules:
   - RULE-SET,domain-rules,🚀 代理策略
   - RULE-SET,ipcidr-rules,🎯 直连策略
+```
