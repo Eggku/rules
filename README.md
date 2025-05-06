@@ -40,7 +40,7 @@
 
 
 📦 Domain 规则示例
-```yara
+```yaml
 payload:
   - "example.com"          # 普通域名
   - "+.google.com"         # 通配域名
@@ -50,7 +50,7 @@ payload:
 ```
 
 💻 IPcidr 规则示例
-```yacas
+```yaml
 payload:
   - 8.8.8.8/32          # 单个 IP
   - 1.1.1.0/24          # 整个子网
