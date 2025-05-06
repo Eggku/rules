@@ -1,4 +1,4 @@
-以下是优化后的 GitHub README，确保 格式美观、图标扁平化，并提升 可读性 与 结构化：
+
 
 📌 Mihomo/Clash 规则整理
 
