@@ -60,6 +60,7 @@ payload:
 ```
 
 🚀 Mihomo 规则使用方法
+```yaml
 rule-providers: 
   domain-direct:
     type: http
@@ -92,23 +93,25 @@ rule-providers:
     path: ./rules/ip-proxy.mrs"
     url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
     interval: 86400
-
+```
 
 🛠 域名 & IP 锚点配置
+```yaml
 rule-providers: 
   domain-direct: { <<: *DomainMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs" }
   domain-proxy:  { <<: *DomainMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs" }
   ip-direct:     { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs" }
   ip-proxy:      { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs" }
-
+```
 
 🤝 规则应用
+```yaml
 rules:
   - RULE-SET,domain-direct,direct
   - RULE-SET,domain-proxy,proxy
   - RULE-SET,ip-direct,direct,no-resolve
   - RULE-SET,ip-proxy,proxy,no-resolve
-
+```
 
 📜 许可证
 
@@ -118,14 +121,3 @@ rules:
 
 📧 Email: example@example.com  
 🌐 项目主页: your-project.com (https://your-project.com/)  
-
-
-🎯 优化点
-
- ✅ 图标扁平化（使用 flat-square 风格）
- ✅ 结构美观（采用表格 + 代码块格式）
- ✅ 清晰的 YAML 代码格式
- ✅ 减少不必要的空格
-
-
-现在你的 README.md 既 专业 也 美观！如果有其他需求，欢迎交流 😊
