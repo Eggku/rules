@@ -61,7 +61,7 @@ payload:
     url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs"
     interval: 86400
 ```
-
+    域名锚点配置：
     domain-direct:          {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-dircet.mrs}
     domain-proxy:           {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-proxy.mrs}
     IP锚点配置：
@@ -69,11 +69,12 @@ payload:
     ip-proxy:               {<<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs}
 
 🤝 rules:
+```yaml
   - RULE-SET,domain-direct, dircet
   - RULE-SET,domain-proxy, proxy
   - RULE-SET,ip-direct, dircet,no-resolve
   - RULE-SET,ip-proxy, proxy,no-resolve
-
+```
 
 该项目采用 MIT 许可证 - 详细信息请查看 LICENSE 文件。
 📞 联系
