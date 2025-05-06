@@ -11,8 +11,8 @@
 
 🔍 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
 
-🚀 核心规则文件作用
-
+🚀 核心规则文件作用：
+```yaml
 🔥 domain-direct.mrs
 国内域名直连
 
@@ -24,7 +24,7 @@
 
 ⚡ ip-proxy.mrs
 国内 IP 代理
-
+```
 📦 Domain 规则示例
 ```yaml
 payload:
