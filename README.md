@@ -62,39 +62,41 @@ payload:
 🚀 Mihomo 规则使用方法
 <details>
   <summary>点击展开查看规则</summary>
-```yaml
-rule-providers: 
-  domain-direct:
-    type: http
-    behavior: domain
-    format: mrs
-    path: ./rules/domain-direct.mrs
-    url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs"
-    interval: 86400
 
-  domain-proxy:
-    type: http
-    behavior: domain
-    format: mrs
-    path: ./rules/domain-proxy.mrs"
-    url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs"
-    interval: 86400
+  ```yaml
+  rule-providers: 
+    domain-direct:
+      type: http
+      behavior: domain
+      format: mrs
+      path: ./rules/domain-direct.mrs
+      url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs"
+      interval: 86400
 
-  ip-direct:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    path: ./rules/ip-direct.mrs"
-    url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs"
-    interval: 86400
+    domain-proxy:
+      type: http
+      behavior: domain
+      format: mrs
+      path: ./rules/domain-proxy.mrs"
+      url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs"
+      interval: 86400
 
-  ip-proxy:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    path: ./rules/ip-proxy.mrs"
-    url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
-    interval: 86400
+    ip-direct:
+      type: http
+      behavior: ipcidr
+      format: mrs
+      path: ./rules/ip-direct.mrs"
+      url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs"
+      interval: 86400
+
+    ip-proxy:
+      type: http
+      behavior: ipcidr
+      format: mrs
+      path: ./rules/ip-proxy.mrs"
+      url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
+      interval: 86400
+
 ```
 
 🛠 域名 & IP 锚点配置
