@@ -15,14 +15,15 @@
 <br>
  📢 征集收录域名 & IP 规则  
 
-欢迎参与 Mihomo/Clash 规则集优化！🎯 请按照👽Domain规则示例和💻IPcidr规则示例提交您的推荐域名&IP至Telegram机器人📩
+欢迎参与 Mihomo/Clash规则集优化！🎯请按照【👽Domain规则示】例和【💻IPcidr规则示】例提交您的推荐域名&IP至Telegram机器人📩
 
-🔹 格式要求
-- +.baidu.com     direct  # 直连
-- +.google.com    proxy   # 代理
-- 123.45.67.0/24  direct  # 直连
-- 123.45.67.0/24  proxy   # 代理
-
+🔹 域名&IP规则格式要求：
+```yaml
+- +.baidu.com     direct  # 域名直连
+- +.google.com    proxy   # 域名代理
+- 123.45.67.0/24  direct  # IP直连
+- 123.45.67.0/24  proxy   # IP代理
+```
 
 🛠 提交方式
 📢 Telegram 机器人: @YourProjectBot (https://t.me/YourProjectBot)  
