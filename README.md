@@ -10,12 +10,12 @@
 </p>
 
 
-💦 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
+💦 Mihomo/Clash收录[🐟漏网之鱼]未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
 <br>
 <br>
  📢 征集收录域名 & IP 规则  
 
-欢迎参与 Mihomo/Clash规则集优化！🎯请按照【👽Domain规则示】例和【💻IPcidr规则示】例提交您的推荐域名&IP至Telegram机器人📩
+欢迎参与 Mihomo/Clash规则集优化！🎯请按照[👽Domain规则示]例和[💻IPcidr规则示]例提交您的推荐域名&IP至Telegram机器人📩
 
 🔹 域名&IP规则格式要求：
 ```yaml
