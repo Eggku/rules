@@ -16,23 +16,23 @@
 
 
 📦 Domain 规则示例
+```yaml
 payload:
   - "example.com"          # 普通域名
   - "+.google.com"         # 通配域名
   - "facebook.com"         # 根域名
   - "+.fbcdn.net"          # 多子域名通配
   - "api.openai.com"       # 指定子域名
-
-
+```
 💻 IPcidr 规则示例
+```yaml
 payload:
   - 8.8.8.8/32          # 单个 IP
   - 1.1.1.0/24          # 整个子网
   - 192.168.0.0/16      # 本地内网
   - 10.0.0.1/32         # 内网设备
   - 123.45.67.0/24      # 某地区出口 IP
-
-
+```
 🚀 Mihomo 规则使用方法
 rules:
 ```yaml
@@ -73,10 +73,10 @@ rule-providers:
 🛠 域名 & IP 锚点配置
 ```yaml
 rule-providers: 
-  domain-direct: { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs }
-  domain-proxy:  { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs }
-  ip-direct:     { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs }
-  ip-proxy:      { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs }
+  domain-direct: {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs}
+  domain-proxy:  {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs}
+  ip-direct:     {<<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs}
+  ip-proxy:      {<<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs}
 ```
 🤝 规则应用
 ```yaml
