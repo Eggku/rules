@@ -110,10 +110,10 @@ rule-providers:
 ⚙ 规则应用
 ```yaml
 rules:
-  - RULE-SET,domain-direct,全球直连
-  - RULE-SET,domain-proxy,香港节点
-  - RULE-SET,ip-direct,全球直连,no-resolve
-  - RULE-SET,ip-proxy,香港节点,no-resolve
+  - RULE-SET,domain-direct,🎯全球直连
+  - RULE-SET,domain-proxy,🇭🇰香港节点
+  - RULE-SET,ip-direct,🎯全球直连,no-resolve
+  - RULE-SET,ip-proxy,🇭🇰香港节点,no-resolve
 ```
 
 📞 联系我们
