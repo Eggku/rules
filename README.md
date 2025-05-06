@@ -60,10 +60,9 @@ payload:
 ```
 
 🚀 Mihomo 规则使用方法
-<details>
   
-
   ```yaml
+<details>
   rule-providers: 
     domain-direct:
       type: http
@@ -96,9 +95,8 @@ payload:
       path: ./rules/ip-proxy.mrs"
       url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
       interval: 86400
-
-```
 <summary>点击展开查看规则</summary>
+```
 🛠 域名 & IP 锚点配置
 ```yaml
 rule-providers: 
