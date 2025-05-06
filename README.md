@@ -28,10 +28,20 @@
 方式一：使用 npm
 npm install your-project
 
-方式二：使用 Git
-git clone https://github.com/your-repo.git
-cd your-repo
-npm install
+# config.yaml
+server:
+  port: 8080
+  ssl:
+    enabled: true
+    cert: /path/to/cert.pem
+
+modules:
+  - name: api-gateway
+    config:
+      rate_limit: 1000r/s
+  - name: cache-system
+    config:
+      redis_url: redis://localhost:6379
 
 🚀 使用
 🔹 运行项目
