@@ -45,7 +45,7 @@
 📛 ip-proxy.mrs         国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
 ```
 
-👽 Domain 规则示例
+👽 Domain 规则示例：
 ```yaml
 payload:
   - "example.com"          # 普通域名
@@ -55,7 +55,7 @@ payload:
   - "api.openai.com"       # 指定子域名
 ```
 
-💻 IPcidr 规则示例
+💻 IPcidr 规则示例：
 ```yaml
 payload:
   - 8.8.8.8/32          # 单个 IP
@@ -64,7 +64,7 @@ payload:
   - 10.0.0.1/32         # 内网设备
   - 123.45.67.0/24      # 某地区出口 IP
 ```
-🚀 Mihomo 域名&IP常规配置
+🚀 Mihomo 域名&IP常规配置：
   ```yaml
   rule-providers: 
     domain-direct:
@@ -99,7 +99,7 @@ payload:
       url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
       interval: 86400
 ```
-🚀 Mihomo 域名&IP锚点配置
+🚀 Mihomo 域名&IP锚点配置：
 ```yaml
 rule-providers: 
   domain-direct: {<<: *DomainMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs"}
@@ -107,7 +107,7 @@ rule-providers:
   ip-direct:     {<<: *ipcidrMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs"}
   ip-proxy:      {<<: *ipcidrMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"}
 ```
-⚙ 规则应用
+⚙ 规则应用：(代理策略组自行修改)。
 ```yaml
 rules:
   - RULE-SET,domain-direct,🎯全球直连
