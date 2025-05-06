@@ -36,6 +36,7 @@ payload:
 🚀 Mihomo 规则使用方法
 rules:
 ```yaml
+rule-providers: 
   domain-direct:
     type: http
     behavior: domain
@@ -71,6 +72,7 @@ rules:
 
 🛠 域名 & IP 锚点配置
 ```yaml
+rule-providers: 
   domain-direct: { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs }
   domain-proxy:  { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs }
   ip-direct:     { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs }
