@@ -40,13 +40,14 @@
 
 
 📦 Domain 规则示例
+```yara
 payload:
   - "example.com"          # 普通域名
   - "+.google.com"         # 通配域名
   - "facebook.com"         # 根域名
   - "+.fbcdn.net"          # 多子域名通配
   - "api.openai.com"       # 指定子域名
-
+```
 
 💻 IPcidr 规则示例
 payload:
