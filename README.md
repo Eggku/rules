@@ -29,8 +29,6 @@
 <br><br>
 📢 Telegram 机器人: @YourProjectBot (https://t.me/YourProjectBot)  
 <br>
-👥 交流群: @YourProjectGroup (https://t.me/YourProjectGroup)  
-<br>
 📌 感谢您的贡献！您的提交将帮助优化规则，提升使用体验 🚀 
 <br>
 <br>
