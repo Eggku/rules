@@ -13,17 +13,13 @@
 
 🚀 核心规则文件作用：
 ```yaml
-🔥 domain-direct.mrs
-国内域名直连
+🔥 domain-direct.mrs    国内域名直连
 
-🎨 domain-proxy.mrs
-国外域名代理
+🎨 domain-proxy.mrs    国外域名代理
 
-🚀 ip-direct.mrs
-国内 IP 直连
+🚀 ip-direct.mrs       国内 IP 直连
 
-⚡ ip-proxy.mrs
-国内 IP 代理
+⚡ ip-proxy.mrs        国外 IP 代理
 ```
 📦 Domain 规则示例
 ```yaml
