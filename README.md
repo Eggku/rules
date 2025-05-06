@@ -13,13 +13,13 @@
 
 🚀 核心规则文件作用：
 ```yaml
-🔥 domain-direct.mrs    国内域名直连
+🔥 domain-direct.mrs    国内域名直连               # 匹配所有子域名（包括主域名）的通配写法，包含日常生活使用的域名。
 
-🎨 domain-proxy.mrs    国外域名代理
+🎨 domain-proxy.mrs    国外域名代理               # 匹配所有子域名（包括主域名）的通配写法，包含emby和其它影视域名。
 
-🚀 ip-direct.mrs       国内 IP 直连
+🚀 ip-direct.mrs       国内 IP 直连               # 匹配整个子网IP的通配写法，包含日常生活使用的IP。
 
-⚡ ip-proxy.mrs        国外 IP 代理
+⚡ ip-proxy.mrs        国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
 ```
 📦 Domain 规则示例
 ```yaml
