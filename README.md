@@ -11,33 +11,19 @@
 
 🔍 Mihomo/Clash 未被 cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理 代理 / 直连 设置。
 
-🚀 核心规则文件
-
-
-
-规则文件
-作用
-
-
-
+🚀 核心规则文件作用
 
 🔥 domain-direct.mrs
 国内域名直连
 
-
 🎨 domain-proxy.mrs
 国外域名代理
-
 
 🚀 ip-direct.mrs
 国内 IP 直连
 
-
 ⚡ ip-proxy.mrs
 国内 IP 代理
-
-
-
 
 📦 Domain 规则示例
 ```yaml
@@ -58,9 +44,7 @@ payload:
   - 10.0.0.1/32         # 内网设备
   - 123.45.67.0/24      # 某地区出口 IP
 ```
-
 🚀 Mihomo 域名&IP常规配置
-  
   ```yaml
   rule-providers: 
     domain-direct:
@@ -103,7 +87,6 @@ rule-providers:
   ip-direct:     { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs" }
   ip-proxy:      { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs" }
 ```
-
 🤝 规则应用
 ```yaml
 rules:
@@ -112,7 +95,6 @@ rules:
   - RULE-SET,ip-direct,direct,no-resolve
   - RULE-SET,ip-proxy,proxy,no-resolve
 ```
-
 📜 许可证
 
 该项目采用 MIT 许可证 - 详细信息请查看 LICENSE 文件。
