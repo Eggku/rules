@@ -1,75 +1,81 @@
-当然！以下是一个精美的 GitHub README 模板，适用于各种开源项目，包含 项目介绍、安装指南、使用方法、贡献方式 等内容：
-
-📌 项目名称
 
 
+📌 项目名称：Mihomo/Clash 整理日常未被【cn_domain】国内【geolocation-!cn】国外收录的规则。
 
 
-🌟 一句话描述你的项目（比如：一个简洁高效的 Markdown 编辑器）
-🚀 介绍
 
-简要介绍项目的用途、特性，以及为何创建它。
 
-✨ 特性
+🌟 简介：
+ 🔥 domain-direct.mrs 国内域名直连规则
+ 🎨 domain-proxy.mrs 国外域名代理规则
+ 🚀 ip-direct.mrs 国内IP直连规则
+ ⚡ ip-proxy.mrs 国内IP代理规则
 
- 🔥 轻量化：占用资源少，启动速度快
- 🎨 美观设计：支持暗黑模式，UI 现代化
- 🚀 高效：具备智能补全、快捷键支持
- ⚡ 跨平台：支持 Windows、macOS 和 Linux
+📦 Domain 示例：
+payload:
+  - "example.com"          # 普通域名
+  - "+.google.com"         # 通配域名
+  - "facebook.com"         # 根域名
+  - "+.fbcdn.net"          # 多子域名通配
+  - "api.openai.com"       # 指定子域名
 
-📦 安装
-🔧 环境要求
+💻 IPcidr 示例：
+payload:
+8.8.8.8/32          # 单个 IP
+1.1.1.0/24          # 整个子网
+192.168.0.0/16      # 本地内网
+10.0.0.1/32         # 内网设备
+123.45.67.0/24      # 某地区出口 IP
 
- Node.js >= 16  
- Git >= 2.25  
- Python >= 3.8（如果涉及到 Python 组件）
+🚀 Mihomo 使用方法：
+  domain-direct:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./rules/domain-dircet.mrs
+    url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-dircet.mrs"
+    interval: 86400
 
-💻 安装步骤
-方式一：使用 npm
-npm install your-project
+  domain-proxy:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./rules/domain-proxy.mrs
+    url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-proxy.mrs"
+    interval: 86400
 
-# config.yaml
-server:
-  port: 8080
-  ssl:
-    enabled: true
-    cert: /path/to/cert.pem
+  ip-direct:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/ip-direct.mrs
+    url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-direct.mrs"
+    interval: 86400
+    
+  ip-proxy:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/ip-proxy.mrs
+    url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs"
+    interval: 86400
 
-modules:
-  - name: api-gateway
-    config:
-      rate_limit: 1000r/s
-  - name: cache-system
-    config:
-      redis_url: redis://localhost:6379
+    域名锚点配置：
+    domain-direct:          {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-dircet.mrs}
+    domain-proxy:           {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-proxy.mrs}
+    IP锚点配置：
+    ip-dircet:              {<<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-dircet.mrs}
+    ip-proxy:               {<<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs}
 
-🚀 使用
-🔹 运行项目
-npm start
+🤝 rules:
+  - RULE-SET,domain-direct, dircet
+  - RULE-SET,domain-proxy, proxy
+  - RULE-SET,ip-direct, dircet,no-resolve
+  - RULE-SET,ip-proxy, proxy,no-resolve
 
-🔹 构建项目
-npm run build
-
-🔹 执行测试
-npm test
-
-🤝 贡献
-
-欢迎参与贡献！请遵循以下步骤：
-1. Fork 仓库（点击右上角的 Fork）
-2. 创建分支（git checkout -b feature-xxx）
-3. 提交代码（git commit -m "✨ 添加新功能"）
-4. 推送分支（git push origin feature-xxx）
-5. 创建 Pull Request
-
-📜 请阅读 贡献指南 (http://contributing.md/) 以了解更多信息。
-📜 许可证
 
 该项目采用 MIT 许可证 - 详细信息请查看 LICENSE 文件。
 📞 联系
 
 📧 Email: example@example.com  
 🌐 项目主页: your-project.com (https://your-project.com/)
-
-
-🎯 这个 README 结构清晰、排版美观，适用于大多数 GitHub 项目。如果需要调整风格或增加其他内容，我可以帮你进一步优化！😊
