@@ -77,6 +77,7 @@ rules:
   ip-proxy:      { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs }
 ```
 🤝 规则应用
+```yaml
 rules:
   - RULE-SET,domain-direct,direct
   - RULE-SET,domain-proxy,proxy
