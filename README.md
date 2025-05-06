@@ -61,7 +61,7 @@ payload:
     url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs"
     interval: 86400
 ```
-    域名锚点配置：
+
     domain-direct:          {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-dircet.mrs}
     domain-proxy:           {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-proxy.mrs}
     IP锚点配置：
