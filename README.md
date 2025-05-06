@@ -25,8 +25,10 @@
 - 123.45.67.0/24  proxy   # IP  代理
 ```
 
-🛠 提交方式
+🛠 提交方式：
+<br><br>
 📢 Telegram 机器人: @YourProjectBot (https://t.me/YourProjectBot)  
+<br><br>
 👥 交流群: @YourProjectGroup (https://t.me/YourProjectGroup)  
 
 📌 感谢您的贡献！您的提交将帮助优化规则，提升使用体验 🚀 
