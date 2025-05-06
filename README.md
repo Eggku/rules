@@ -9,9 +9,11 @@
   <img src="https://img.shields.io/github/license/Eggku/rules?style=flat-square" alt="License">
 </p>
 
-🔍 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
+❤️‍🔥 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
 
-🚀 核心规则文件作用：
+
+
+💢 核心规则文件作用：
 ```yaml
 📛 domain-direct.mrs    国内域名直连               # 匹配所有子域名（包括主域名）的通配写法，包含日常生活使用的域名。
 
@@ -21,7 +23,8 @@
 
 📛 ip-proxy.mrs         国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
 ```
-📛 Domain 规则示例
+
+👽 Domain 规则示例
 ```yaml
 payload:
   - "example.com"          # 普通域名
