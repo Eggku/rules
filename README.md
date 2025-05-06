@@ -3,15 +3,14 @@
 
 
 
-🔍 Mihomo/Clash 未被 cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理 代理 / 直连 设置。
+🔍 Mihomo/Clash未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
 
-🌟 项目简介
 
 📌 核心规则文件
 
  🔥 domain-direct.mrs 👉 国内域名直连           🎨 domain-proxy.mrs 👉 国外域名代理
  
- 🚀 ip-direct.mrs 👉 国内 IP 直连              ⚡ ip-proxy.mrs 👉 国内 IP 代理
+ 🚀 ip-direct.mrs 👉 国内 IP 直连           ⚡ ip-proxy.mrs 👉 国内 IP 代理
 
 
 📦 Domain 规则示例
