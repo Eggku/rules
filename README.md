@@ -59,10 +59,9 @@ payload:
   - 123.45.67.0/24      # 某地区出口 IP
 ```
 
-🚀 Mihomo 规则使用方法
+🚀 Mihomo 域名&IP常规配置
   
   ```yaml
-<details>
   rule-providers: 
     domain-direct:
       type: http
@@ -95,9 +94,8 @@ payload:
       path: ./rules/ip-proxy.mrs"
       url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
       interval: 86400
-<summary>点击展开查看规则</summary>
 ```
-🛠 域名 & IP 锚点配置
+🚀 Mihomo 域名&IP锚点配置
 ```yaml
 rule-providers: 
   domain-direct: { <<: *DomainMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs" }
