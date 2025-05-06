@@ -1,9 +1,5 @@
-当然！这里是 美化 & 结构优化 版的 README.md，让您的项目更加 清晰、专业、易读 🚀  
 
 📌 Mihomo/Clash 规则整理  
-
-
-
 
 
 
@@ -96,14 +92,3 @@ rules:
 
 📧 Email: example@example.com  
 🌐 项目主页: your-project.com (https://your-project.com/)  
-
-
-🎯 优化点
-
- ✨ 提升可读性（分块结构、更清晰的分类）
- 🎨 美化 Markdown 语法（代码块、YAML 格式化）
- 🔥 去除拼写错误（修正 dircet → direct）
- 🚀 调整 URL 结构（统一 main 分支的路径）
-
-
-这样，您的 GitHub README.md 既 专业 也 易读！如果有其他需求，欢迎进一步优化 😃
