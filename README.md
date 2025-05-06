@@ -11,8 +11,10 @@
 
 
 💦 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
-  第一行  
-  第二行
+<br>
+<br>
+<br>
+<br>
 💢 核心规则文件作用：
 ```yaml
 📛 domain-direct.mrs    国内域名直连               # 匹配所有子域名（包括主域名）的通配写法，包含日常生活使用的域名。
