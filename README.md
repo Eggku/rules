@@ -28,6 +28,7 @@ payload:
 123.45.67.0/24      # 某地区出口 IP
 
 🚀 Mihomo 使用方法：
+```yaml
   domain-direct:
     type: http
     behavior: domain
@@ -59,7 +60,7 @@ payload:
     path: ./rules/ip-proxy.mrs
     url: "https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/ip-proxy.mrs"
     interval: 86400
-
+```
     域名锚点配置：
     domain-direct:          {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-dircet.mrs}
     domain-proxy:           {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/refs/heads/main/domain-proxy.mrs}
