@@ -35,6 +35,7 @@ payload:
 
 🚀 Mihomo 规则使用方法
 rules:
+```yaml
   domain-direct:
     type: http
     behavior: domain
@@ -66,24 +67,23 @@ rules:
     path: ./rules/ip-proxy.mrs
     url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"
     interval: 86400
-
+```
 
 🛠 域名 & IP 锚点配置
-anchors:
+anchors:```yaml
   domain-direct: { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs }
   domain-proxy:  { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs }
   ip-direct:     { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs }
   ip-proxy:      { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs }
-
-
+```
 🤝 规则应用
+```yaml
 rules:
   - RULE-SET,domain-direct,direct
   - RULE-SET,domain-proxy,proxy
   - RULE-SET,ip-direct,direct,no-resolve
   - RULE-SET,ip-proxy,proxy,no-resolve
-
-
+```
 📜 许可证
 
 该项目采用 MIT 许可证 - 详细信息请查看 LICENSE 文件。
