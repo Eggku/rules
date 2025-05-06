@@ -13,6 +13,22 @@
 💦 Mihomo/Clash 征集日常使用未被cn_domain（国内）或 geolocation-!cn（国外）收录的规则集，帮助您更精准地管理代理/直连设置。
 <br>
 <br>
+ 📢 征集收录域名 & IP 规则  
+
+欢迎参与 Mihomo/Clash 规则集优化！🎯 请按照👽Domain规则示例和💻IPcidr规则示例提交您的推荐域名&IP至Telegram机器人📩
+
+🔹 格式要求
+- +.baidu.com     direct  # 直连
+- +.google.com    proxy   # 代理
+- 123.45.67.0/24  direct  # 直连
+- 123.45.67.0/24  proxy   # 代理
+
+
+🛠 提交方式
+📢 Telegram 机器人: @YourProjectBot (https://t.me/YourProjectBot)  
+👥 交流群: @YourProjectGroup (https://t.me/YourProjectGroup)  
+
+📌 感谢您的贡献！您的提交将帮助优化规则，提升使用体验 🚀 
 <br>
 <br>
 💢 核心规则文件作用：
@@ -96,11 +112,14 @@ rules:
   - RULE-SET,ip-direct,direct,no-resolve
   - RULE-SET,ip-proxy,proxy,no-resolve
 ```
-📜 许可证
 
-该项目采用 MIT 许可证 - 详细信息请查看 LICENSE 文件。
-
-📞 联系
+📞 联系我们
 
 📧 Email: example@example.com  
 🌐 项目主页: your-project.com (https://your-project.com/)  
+💬 社区 & 交流群
+
+📢 Telegram 频道: @YourProjectChannel (https://t.me/YourProjectChannel)  
+👥 Telegram 交流群: @YourProjectGroup (https://t.me/YourProjectGroup)  
+
+📌 欢迎加入我们的社区，与更多用户交流、获取最新更新！ 🚀
