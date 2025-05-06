@@ -60,6 +60,8 @@ payload:
 ```
 
 🚀 Mihomo 规则使用方法
+<details>
+  <summary>点击展开查看规则</summary>
 ```yaml
 rule-providers: 
   domain-direct:
