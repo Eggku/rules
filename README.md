@@ -70,14 +70,13 @@ rules:
 ```
 
 🛠 域名 & IP 锚点配置
-anchors:```yaml
+```yaml
   domain-direct: { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs }
   domain-proxy:  { <<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs }
   ip-direct:     { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs }
   ip-proxy:      { <<: *ipcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs }
 ```
 🤝 规则应用
-```yaml
 rules:
   - RULE-SET,domain-direct,direct
   - RULE-SET,domain-proxy,proxy
