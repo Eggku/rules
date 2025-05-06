@@ -13,15 +13,15 @@
 
 🚀 核心规则文件作用：
 ```yaml
-🔥 domain-direct.mrs    国内域名直连               # 匹配所有子域名（包括主域名）的通配写法，包含日常生活使用的域名。
+📛 domain-direct.mrs    国内域名直连               # 匹配所有子域名（包括主域名）的通配写法，包含日常生活使用的域名。
 
-🎨 domain-proxy.mrs    国外域名代理               # 匹配所有子域名（包括主域名）的通配写法，包含emby和其它影视域名。
+📛 domain-proxy.mrs     国外域名代理               # 匹配所有子域名（包括主域名）的通配写法，包含emby和其它影视域名。
 
-🚀 ip-direct.mrs       国内 IP 直连               # 匹配整个子网IP的通配写法，包含日常生活使用的IP。
+📛 ip-direct.mrs        国内 IP 直连               # 匹配整个子网IP的通配写法，包含日常生活使用的IP。
 
-⚡ ip-proxy.mrs        国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
+📛 ip-proxy.mrs         国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
 ```
-📦 Domain 规则示例
+📛 Domain 规则示例
 ```yaml
 payload:
   - "example.com"          # 普通域名
@@ -83,7 +83,7 @@ rule-providers:
   ip-direct:     { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs" }
   ip-proxy:      { <<: *ipcidrMrs, url: "https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs" }
 ```
-🤝 规则应用
+⚙ 规则应用
 ```yaml
 rules:
   - RULE-SET,domain-direct,direct
