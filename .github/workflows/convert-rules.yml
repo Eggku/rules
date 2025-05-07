@@ -30,8 +30,12 @@ jobs:
 
       - name: 🛠 确保 `rules/` 目录存在
         run: |
-          if not exist rules mkdir rules
-          if not exist rules/mrs mkdir rules/mrs
+          if not exist rules (
+            mkdir rules
+          )
+          if not exist rules/mrs (
+            mkdir rules/mrs
+          )
         shell: cmd
 
       - name: 🛠 列出 `rules/` 目录内容
