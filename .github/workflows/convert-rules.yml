@@ -29,14 +29,15 @@ jobs:
         shell: cmd
 
       - name: ✅ 检查 `.mrs` 文件是否生成
-        run: |
-          if exist rules/mrs\*.mrs (
-          echo "✅ .mrs 文件已生成！"
-          ) else (
-          echo "⚠️ 错误：未找到转换后的 .mrs 文件！"
-          exit 1
-          )
-          shell: cmd
+  shell: cmd
+  run: |
+    if exist rules\mrs\*.mrs (
+      echo "✅ .mrs 文件已成功生成！"
+    ) else (
+      echo "⚠️ 错误：未找到转换后的 .mrs 文件！"
+      exit 1
+    )
+
 
 
       - name: 📦 打包转换后的 `.mrs` 文件
