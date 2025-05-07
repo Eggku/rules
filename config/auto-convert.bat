@@ -17,9 +17,8 @@ echo 转换日志 > "%LOG_FILE%"
 echo 开始时间: %date% %time% >> "%LOG_FILE%"
 echo ==============================
 
-:: 测试 `mihomo.exe` 是否能运行
-echo "测试 mihomo.exe..." >> "%LOG_FILE%"
-config\mihomo.exe --help >> "%LOG_FILE%" 2>&1
+:: 确保 `mihomo.exe` 可以运行
+config\mihomo.exe -v >> "%LOG_FILE%" 2>&1
 if errorlevel 1 (
     echo "⚠️ 错误：mihomo.exe 无法运行！" >> "%LOG_FILE%"
     exit 255
@@ -27,19 +26,12 @@ if errorlevel 1 (
 
 :: 遍历所有 `.yaml` 文件
 for /r "%RULES_DIR%" %%f in (*.yaml) do (
-    set "ip_found=0"
-
-    :: 检查是否为 IP 规则
-    findstr /r /c:"^  - [0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/[0-9][0-9]*" "%%f" >nul
-    if !errorlevel! equ 0 set ip_found=1
-
-    :: 生成输出文件路径
     set "filename=%%~nf"
     set "out_file=%OUTPUT_DIR%\!filename!.mrs"
 
     :: 执行转换
     echo "正在转换 %%~nxf ..." >> "%LOG_FILE%"
-    config\mihomo.exe convert-ruleset domain yaml "%%f" "!out_file!" >> "%LOG_FILE%" 2>&1
+    config\mihomo.exe -f "%%f" convert-ruleset domain yaml "%%f" "!out_file!" >> "%LOG_FILE%" 2>&1
 
     :: 检测错误
     if errorlevel 1 (
@@ -50,3 +42,8 @@ for /r "%RULES_DIR%" %%f in (*.yaml) do (
     )
     echo ------------------------------
 )
+
+:: 显示生成的文件列表
+echo "生成的文件列表：" >> "%LOG_FILE%"
+dir /b "%OUTPUT_DIR%" >> "%LOG_FILE%"
+echo "转换完成！" >> "%LOG_FILE%"
