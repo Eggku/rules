@@ -1,4 +1,4 @@
-name: 自动转换并发布 Release
+tname: 自动转换并发布 Release
 
 on:
   schedule:
@@ -45,7 +45,7 @@ jobs:
       - name: 🔍 检查 YAML 文件存在性
         run: |
           if not exist rules\domain-dircet.yaml (
-            echo "❌ 错误：缺少 rules/domain-dircet.yaml" && exit 1
+            echo "❌ 错误：缺少 rules/domain-direct.yaml" && exit 1
           )
           if not exist rules\domain-proxy.yaml (
             echo "❌ 错误：缺少 rules/domain-proxy.yaml" && exit 1
@@ -60,7 +60,7 @@ jobs:
 
       - name: ⚙️ 执行规则转换
         run: |
-          config\mihomo.exe convert-ruleset domain yaml rules\domain-dircet.yaml rules\mrs\domain-dircet.mrs
+          config\mihomo.exe convert-ruleset domain yaml rules\domain-dircet.yaml rules\mrs\domain-direct.mrs
           config\mihomo.exe convert-ruleset domain yaml rules\domain-proxy.yaml rules\mrs\domain-proxy.mrs
           config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-direct.yaml rules\mrs\ip-direct.mrs
           config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-proxy.yaml rules\mrs\ip-proxy.mrs
@@ -105,7 +105,7 @@ jobs:
           body: |
             🕒 生成时间: ${{ env.TAG_NAME }}
             📂 包含文件:
-            - `domain-dircet.mrs`
+            - `domain-direct.mrs`
             - `domain-proxy.mrs`
             - `ip-direct.mrs`
             - `ip-proxy.mrs`
