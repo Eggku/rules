@@ -1,7 +1,7 @@
-name: 自动转换规则集
+name: 自动转换并发布 Release
 on:
   schedule:
-    - cron: "0 */12 * * *"  # 每 12 小时运行一次
+    - cron: "0 0 * * *"  # 每 24 小时运行一次（每天午夜）
   push:
     branches:
       - main  # 监听 `main` 分支的代码变更
@@ -10,6 +10,8 @@ on:
 jobs:
   convert-rules:
     runs-on: windows-latest
+    permissions:
+      contents: write  # 允许发布 Release
     steps:
       - name: 🛠️ 检出仓库代码
         uses: actions/checkout@v3
@@ -17,8 +19,26 @@ jobs:
       - name: 🔄 下载 `mihomo.exe`
         run: |
           curl -L -o config/mihomo.exe "https://your-download-link.com/mihomo.exe"
-        shell: bash  # 使用 Bash 运行 curl
+        shell: bash  # 使用 Bash 下载 mihomo.exe
 
-      - name: 🛠️ 运行 `.bat` 转换脚本
-        run: cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"   # ✅ 用 CMD 执行 .bat 文件
-        shell: cmd  # 强制 CMD 运行
+      - name: 🔄 执行转换脚本
+        run: cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"  # ✅ 用 CMD 运行 `.bat`
+        shell: cmd
+
+      - name: 📦 打包转换后的 `.mrs` 文件
+        run: |
+          powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
+        shell: powershell
+
+      - name: 🚀 发布 GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: rules/mrs-release.zip
+          tag_name: latest
+          name: 自动更新规则集
+          body: |
+            🚀 **最新转换规则**
+            - **更新时间:** $(date +'%Y-%m-%d %H:%M:%S')
+            - **文件:** `.mrs` 规则集
+          draft: false
+          prerelease: false
