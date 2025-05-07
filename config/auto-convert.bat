@@ -10,7 +10,7 @@ set "OUTPUT_DIR=%RULES_DIR%\mrs"
 set "LOG_FILE=%GITHUB_WORKSPACE%\conversion.log"
 set "MIHOMO_EXE=%GITHUB_WORKSPACE%\config\mihomo.exe"
 
-:: 创建 `mrs` 目录（如果不存在）
+:: 确保 `.mrs` 目录存在
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 echo 转换日志 > "%LOG_FILE%"
@@ -43,7 +43,7 @@ for /r "%RULES_DIR%" %%f in (*.yaml) do (
     echo ------------------------------
 )
 
-:: 显示生成的文件列表
+:: 显示生成的 `.mrs` 文件列表
 echo "生成的文件列表：" >> "%LOG_FILE%"
 dir /b "%OUTPUT_DIR%" >> "%LOG_FILE%"
 echo "转换完成！" >> "%LOG_FILE%"
