@@ -1,48 +1,28 @@
 @echo off
-:: 文件名: auto-convert.bat
-:: 功能: 自动转换 .yaml 规则至 .mrs 并存储到 `rules\mrs` 目录
+echo "正在执行 auto-convert.bat..." >> conversion.log
 
-setlocal enabledelayedexpansion
-
-:: 设置路径
-set "RULES_DIR=%GITHUB_WORKSPACE%\rules"
-set "OUTPUT_DIR=%RULES_DIR%\mrs"
-set "LOG_FILE=%GITHUB_WORKSPACE%\conversion.log"
-set "MIHOMO_EXE=%GITHUB_WORKSPACE%\config\mihomo.exe"
-
-:: 检查 `mihomo.exe` 是否存在
-if not exist "%MIHOMO_EXE%" (
-    echo "⚠️ 错误：未找到 mihomo.exe，请检查路径！" >> "%LOG_FILE%"
-    exit 1
+:: 检查 mihomo.exe 是否存在
+if not exist "config\mihomo.exe" (
+    echo "⚠️ 错误：未找到 mihomo.exe！" >> conversion.log
+    exit 255
 )
 
-:: 创建 `mrs` 目录（如果不存在）
-if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
+:: 测试 mihomo.exe 是否能运行
+echo "测试 mihomo.exe..." >> conversion.log
+config\mihomo.exe --help >> conversion.log 2>&1
+if errorlevel 1 (
+    echo "⚠️ 错误：mihomo.exe 无法运行！" >> conversion.log
+    exit 255
+)
 
-echo 转换日志 > "%LOG_FILE%"
-echo 开始时间: %date% %time% >> "%LOG_FILE%"
-echo ==============================
+:: 开始转换
+echo "执行规则转换..." >> conversion.log
+config\mihomo.exe convert-ruleset domain yaml rules\input.yaml rules\mrs\output.mrs >> conversion.log 2>&1
 
-:: 遍历所有 `.yaml` 文件
-for /r "%RULES_DIR%" %%f in (*.yaml) do (
-    set "ip_found=0"
+:: 检查是否生成 .mrs 文件
+if not exist "rules\mrs\output.mrs" (
+    echo "⚠️ 错误：未生成 .mrs 文件！" >> conversion.log
+    exit 255
+)
 
-    :: 检查是否为 IP 规则
-    findstr /r /c:"^  - [0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/[0-9][0-9]*" "%%f" >nul
-    if !errorlevel! equ 0 set ip_found=1
-
-    :: 生成输出文件路径
-    set "filename=%%~nf"
-    set "out_file=%OUTPUT_DIR%\!filename!.mrs"
-
-    :: 执行转换
-    echo "正在转换 %%~nxf ..." >> "%LOG_FILE%"
-    "%MIHOMO_EXE%" convert-ruleset domain yaml "%%f" "!out_file!"
-
-    :: 检测错误
-    if errorlevel 1 (
-        echo "[失败] %%~nxf，mihomo.exe 运行失败！" >> "%LOG_FILE%"
-        exit 1
-    ) else (
-        echo "[成功] %%~nxf" >> "%LOG_FILE%"
-    )
+echo "✅ 规则转换成功！" >> conversion.log
