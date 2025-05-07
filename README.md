@@ -27,7 +27,7 @@
 
 ⛔域名完整匹配示例：
 ```yaml
-- services.googleapis.cn 仅匹配这个域名，不影响其他 googleapis.cn 子域名。
+- services.googleapis.cn  # 仅匹配这个域名，不影响其他 googleapis.cn 子域名。
 ```
 🛠 提交方式：
 <br><br>
