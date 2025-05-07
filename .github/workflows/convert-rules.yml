@@ -30,15 +30,20 @@ jobs:
           powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
         shell: powershell
 
+      - name: 🚀 生成 Release 版本号
+        id: get_date
+        run: echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash  # ✅ 生成 YYYYMMDD 版本号
+
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: rules/mrs-release.zip
-          tag_name: latest
-          name: 自动更新规则集
+          tag_name: ${{ env.TAG_NAME }}  # ✅ 使用 YYYYMMDD 作为版本号
+          name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🚀 **最新转换规则**
-            - **更新时间:** $(date +'%Y-%m-%d %H:%M:%S')
+            - **更新时间:** ${{ env.TAG_NAME }}
             - **文件:** `.mrs` 规则集
           draft: false
           prerelease: false
