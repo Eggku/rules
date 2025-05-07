@@ -40,8 +40,8 @@ jobs:
         run: cmd /c config\auto-convert.bat
         shell: cmd
 
-      - name: 📂 列出输出目录内容
-        run: dir rules\mrs
+      - name: 📂 列出 `.mrs` 文件
+        run: dir rules/mrs
         shell: cmd
 
       - name: 🧪 查看转换日志
@@ -54,12 +54,12 @@ jobs:
           name: conversion-log
           path: conversion.log
 
-      - name: ✅ 检查 `.mrs` 文件是否生成
+      - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          dir rules\mrs | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+          dir rules/mrs | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: cmd
 
-      - name: 📦 打包转换后的 `.mrs` 文件
+      - name: 📦 打包 `.mrs` 文件
         run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
         shell: powershell
 
@@ -69,6 +69,9 @@ jobs:
           echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" | Out-File -FilePath $env:GITHUB_ENV -Append
         shell: powershell
 
+      - name: 🚀 查看环境变量（调试）
+        run: type $env:GITHUB_ENV
+        shell: powershell
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
