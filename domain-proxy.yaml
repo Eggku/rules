@@ -2,6 +2,7 @@ payload:
     - +.temp-number.com
     - +.nebula-media.org
     - services.googleapis.cn
+    - +.googleapis.cn
     - xn--ngstr-lra8j.com
     - +.coemn.com
     - +.yezi.my
@@ -9,8 +10,11 @@ payload:
     - +.embycc.link
     - xn--gmq396grzd.com
     - +.amazon-adsystem.com
-    - +.us.criteo.com
+    - +.criteo.com
     - +.ebayadservices.com
+    - +.online-metrix.net
+    - +.sc-static.net
+    - +.tiqcdn.com
     - +.clashmi.app
     - +.speedtest.net
     - +.tencent.yuanbao
