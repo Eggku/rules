@@ -65,8 +65,10 @@ jobs:
 
       - name: 🚀 生成 Release 版本号
         id: get_date
-        run: echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" >> $GITHUB_ENV
+        run: |
+          echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" | Out-File -FilePath $env:GITHUB_ENV -Append
         shell: powershell
+
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
