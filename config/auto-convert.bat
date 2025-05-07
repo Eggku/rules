@@ -30,24 +30,21 @@ for /r "%RULES_DIR%" %%f in (*.yaml) do (
     set "out_file=%OUTPUT_DIR%\!filename!.mrs"
 
     :: 执行转换
-    echo 正在转换 %%~nxf >> "%LOG_FILE%"
-    if !ip_found! equ 1 (
-        "%MIHOMO_EXE%" convert-ruleset ipcidr yaml "%%f" "!out_file!"
-    ) else (
-        "%MIHOMO_EXE%" convert-ruleset domain yaml "%%f" "!out_file!"
-    )
+    echo "正在转换 %%~nxf ..." >> "%LOG_FILE%"
+    "%MIHOMO_EXE%" convert-ruleset domain yaml "%%f" "!out_file!"
+    echo "转换完成: %%~nxf ..." >> "%LOG_FILE%"
 
     :: 检测错误
     if errorlevel 1 (
-        echo [失败] %%~nxf >> "%LOG_FILE%"
+        echo "[失败] %%~nxf" >> "%LOG_FILE%"
         timeout /t 5
         exit 1
     ) else (
-        echo [成功] %%~nxf >> "%LOG_FILE%"
+        echo "[成功] %%~nxf" >> "%LOG_FILE%"
     )
     echo ------------------------------
 )
 
 :: 显示生成的文件列表
 dir /b "%OUTPUT_DIR%" >> "%LOG_FILE%"
-echo 转换完成！ >> "%LOG_FILE%"
+echo "转换完成！" >> "%LOG_FILE%"
