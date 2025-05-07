@@ -1,17 +1,17 @@
 name: 自动转换并发布 Release
 on:
   schedule:
-    - cron: "0 0 * * *"  # 每 24 小时运行一次（每天午夜）
+    - cron: "0 0 * * *"
   push:
     branches:
-      - main  # 监听 `main` 分支的代码变更
-  workflow_dispatch:  # 允许手动运行
+      - main
+  workflow_dispatch:
 
 jobs:
   convert-rules:
     runs-on: windows-latest
     permissions:
-      contents: write  # 允许发布 Release
+      contents: write
     steps:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
@@ -19,41 +19,32 @@ jobs:
       - name: 🔄 下载 `mihomo.exe`
         run: |
           curl -L -o config/mihomo.exe "https://your-download-link.com/mihomo.exe"
-          ls config  # ✅ 确保 `mihomo.exe` 下载正确
-        shell: bash
+          dir config
+        shell: pwsh
 
-      - name: 🛠 运行 `.bat` 转换脚本
+      - name: 🔒 授权执行 mihomo.exe（可选）
         run: |
-          echo "启动转换脚本..." >> conversion.log
-          cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"
+          icacls config\mihomo.exe
         shell: cmd
 
-      - name: ✅ 检查 `.mrs` 文件是否生成
+      - name: 🛠 运行转换脚本
+        run: config\\auto-convert.bat
         shell: cmd
-        run: |
-          if exist rules\mrs\*.mrs (
-          echo "✅ .mrs 文件已成功生成！"
-          ) else (
-          echo "⚠️ 错误：未找到转换后的 .mrs 文件！"
-          exit 1
-          )
-
-
 
       - name: 📦 打包转换后的 `.mrs` 文件
         run: |
-          powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
-        shell: powershell
+          Compress-Archive -Path rules\mrs\* -DestinationPath rules\mrs-release.zip
+        shell: pwsh
 
       - name: 🚀 生成 Release 版本号
         id: get_date
-        run: echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
+        run: echo "TAG_NAME=$(Get-Date -Format yyyyMMdd)" >> $env:GITHUB_ENV
+        shell: pwsh
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: rules/mrs/*.mrs  # ✅ 确保发布的是 `.mrs` 文件
+          files: rules/mrs-release.zip
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
