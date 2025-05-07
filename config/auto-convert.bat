@@ -1,61 +1,53 @@
 @echo off
-:: ÎÄ¼þÃû: auto-convert.bat
-:: ¹¦ÄÜ: ×Ô¶¯×ª»» `.yaml` ¹æÔòÖÁ `.mrs`£¬²¢´æ´¢µ½ `rules\mrs` Ä¿Â¼
+:: æ–‡ä»¶å: auto-convert.bat
+:: åŠŸèƒ½: è‡ªåŠ¨è½¬æ¢ .yaml è§„åˆ™è‡³ .mrs å¹¶å­˜å‚¨åˆ° `rules\mrs` ç›®å½•
 
 setlocal enabledelayedexpansion
 
-:: ÉèÖÃÂ·¾¶
-set "RULES_DIR=rules"
+:: è®¾ç½®è·¯å¾„
+set "RULES_DIR=%GITHUB_WORKSPACE%\rules"
 set "OUTPUT_DIR=%RULES_DIR%\mrs"
-set "LOG_FILE=conversion.log"
+set "LOG_FILE=%GITHUB_WORKSPACE%\conversion.log"
+set "MIHOMO_EXE=%GITHUB_WORKSPACE%\config\mihomo.exe"
 
-:: ´´½¨mrsÄ¿Â¼£¨Èç¹û²»´æÔÚ£©
+:: åˆ›å»ºmrsç›®å½•ï¼ˆå¦‚æžœä¸å­˜åœ¨ï¼‰
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
-echo ×ª»»ÈÕÖ¾ > "%LOG_FILE%"
-echo ¿ªÊ¼Ê±¼ä: %date% %time% >> "%LOG_FILE%"
+echo è½¬æ¢æ—¥å¿— > "%LOG_FILE%"
+echo å¼€å§‹æ—¶é—´: %date% %time% >> "%LOG_FILE%"
 echo ==============================
 
-:: ±éÀúËùÓÐ `.yaml` ÎÄ¼þ
+:: éåŽ†æ‰€æœ‰ .yaml æ–‡ä»¶
 for /r "%RULES_DIR%" %%f in (*.yaml) do (
     set "ip_found=0"
 
-    :: ¼ì²éÊÇ·ñÎª IP ¹æÔò£¨ÅÅ³ý×¢ÊÍ¸ÉÈÅ£©
+    :: æ£€æŸ¥æ˜¯å¦ä¸º IP è§„åˆ™ï¼ˆæŽ’é™¤æ³¨é‡Šå¹²æ‰°ï¼‰
     findstr /r /c:"^  - [0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/[0-9][0-9]*" "%%f" >nul
     if !errorlevel! equ 0 set ip_found=1
 
-    :: Éú³ÉÊä³öÎÄ¼þÂ·¾¶
+    :: ç”Ÿæˆè¾“å‡ºæ–‡ä»¶è·¯å¾„
     set "filename=%%~nf"
     set "out_file=%OUTPUT_DIR%\!filename!.mrs"
 
-    :: Ö´ÐÐ×ª»»
+    :: æ‰§è¡Œè½¬æ¢
+    echo æ­£åœ¨è½¬æ¢ %%~nxf >> "%LOG_FILE%"
     if !ip_found! equ 1 (
-        echo [IP¹æÔò] ×ª»»: %%~nxf ¡ú \mrs\!filename!.mrs
-        mihomo convert-ruleset ipcidr yaml "%%f" "!out_file!"
+        "%MIHOMO_EXE%" convert-ruleset ipcidr yaml "%%f" "!out_file!"
     ) else (
-        echo [ÓòÃû¹æÔò] ×ª»»: %%~nxf ¡ú \mrs\!filename!.mrs
-        mihomo convert-ruleset domain yaml "%%f" "!out_file!"
+        "%MIHOMO_EXE%" convert-ruleset domain yaml "%%f" "!out_file!"
     )
 
-    :: ¼ì²â´íÎó
+    :: æ£€æµ‹é”™è¯¯
     if errorlevel 1 (
-        echo [Ê§°Ü] %%~nxf >> "%LOG_FILE%"
-        echo ¨€ ÎÄ¼þ½á¹¹ÎÊÌâ¼ì²â ¨€
-        echo ÎÊÌâÎÄ¼þ: %%~nxf
-        echo ¿ìËÙÑéÖ¤:
-        echo mihomo convert-ruleset test yaml "%%f"
+        echo [å¤±è´¥] %%~nxf >> "%LOG_FILE%"
         timeout /t 5
+        exit 1
     ) else (
-        echo [³É¹¦] %%~nxf >> "%LOG_FILE%"
+        echo [æˆåŠŸ] %%~nxf >> "%LOG_FILE%"
     )
     echo ------------------------------
 )
 
-:: ÏÔÊ¾Éú³ÉµÄÎÄ¼þÁÐ±í
-echo Éú³ÉÎÄ¼þÁÐ±í: >> "%LOG_FILE%"
+:: æ˜¾ç¤ºç”Ÿæˆçš„æ–‡ä»¶åˆ—è¡¨
 dir /b "%OUTPUT_DIR%" >> "%LOG_FILE%"
-
-echo ×ª»»Íê³É£¡
-echo ½áÊøÊ±¼ä: %date% %time% >> "%LOG_FILE%"
-start "" "%OUTPUT_DIR%"
-notepad "%LOG_FILE%"
+echo è½¬æ¢å®Œæˆï¼ >> "%LOG_FILE%"
