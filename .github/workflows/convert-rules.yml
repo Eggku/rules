@@ -20,8 +20,7 @@ jobs:
       - name: 🔄 下载 mihomo.exe
         run: |
           curl -L -o config/mihomo.exe "https://github.com/mihomo/mihomo/releases/latest/download/mihomo-windows-amd64.exe"
-          dir config
-        shell: cmd
+          shell: bash
 
       - name: ⚙️ 测试 mihomo.exe 是否能运行
         run: config\\mihomo.exe --help
