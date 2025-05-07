@@ -2,23 +2,30 @@
 setlocal enabledelayedexpansion
 
 :: ========================
-:: 配置绝对路径
+:: 环境变量定义
 :: ========================
-set "ROOT_DIR=%GITHUB_WORKSPACE%"
-set "RULES_DIR=%ROOT_DIR%\rules"
+set "WORKSPACE=%~dp0.."
+set "RULES_DIR=%WORKSPACE%\rules"
 set "OUTPUT_DIR=%RULES_DIR%\mrs"
-set "LOG_FILE=%ROOT_DIR%\conversion.log"
-set "MIHOMO_EXE=%ROOT_DIR%\config\mihomo.exe"
+set "LOG_FILE=%WORKSPACE%\conversion.log"
+set "MIHOMO_EXE=%WORKSPACE%\config\mihomo.exe"
 
 :: ========================
-:: 初始化日志和目录
+:: 初始化日志
 :: ========================
-echo [%date% %time%] 开始转换 > "%LOG_FILE%"
-if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
+echo [%date% %time%] 转换日志 > "%LOG_FILE%"
+echo 工作区路径: %WORKSPACE% >> "%LOG_FILE%"
+echo 输入目录: %RULES_DIR% >> "%LOG_FILE%"
+echo 输出目录: %OUTPUT_DIR% >> "%LOG_FILE%"
 
 :: ========================
-:: 关键文件检查
+:: 目录验证
 :: ========================
+if not exist "%RULES_DIR%" (
+  echo [ERROR] 规则目录不存在 >> "%LOG_FILE%"
+  exit /b 1
+)
+
 if not exist "%MIHOMO_EXE%" (
   echo [ERROR] mihomo.exe 未找到 >> "%LOG_FILE%"
   exit /b 1
@@ -34,25 +41,24 @@ for /r "%RULES_DIR%" %%f in (*.yaml) do (
   echo 正在转换: %%~nxf >> "%LOG_FILE%"
   
   "%MIHOMO_EXE%" convert-ruleset ^
+    --type domain ^
     --input-format yaml ^
     --output-format binary ^
-    --type domain ^
     "!input_file!" "!output_file!" 2>&1 >> "%LOG_FILE%"
 
   if !errorlevel! neq 0 (
     echo [FAILED] 转换失败: %%~nxf >> "%LOG_FILE%"
     exit /b 1
-  ) else (
-    echo [SUCCESS] 生成: !output_file! >> "%LOG_FILE%"
   )
+  echo [SUCCESS] 生成: !output_file! >> "%LOG_FILE%"
 )
 
 :: ========================
 :: 最终验证
 :: ========================
-dir /b "%OUTPUT_DIR%" > nul
+dir /b "%OUTPUT_DIR%\*.mrs" >nul
 if %errorlevel% neq 0 (
-  echo [ERROR] 输出目录为空！ >> "%LOG_FILE%"
+  echo [ERROR] 未生成任何 .mrs 文件 >> "%LOG_FILE%"
   exit 1
 )
 
