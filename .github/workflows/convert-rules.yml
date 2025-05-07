@@ -1,4 +1,4 @@
-name: 自动转换并发布 Release
+name: 规则集自动化处理
 on:
   schedule:
     - cron: "0 0 * * *"  # 每 24 小时运行一次（每天午夜）
@@ -19,10 +19,13 @@ jobs:
       - name: 🔄 下载 `mihomo.exe`
         run: |
           curl -L -o config/mihomo.exe "https://your-download-link.com/mihomo.exe"
-        shell: bash  # 使用 Bash 下载 mihomo.exe
+          ls config  # ✅ 确保 `mihomo.exe` 下载正确
+        shell: bash
 
-      - name: 🔄 执行转换脚本
-        run: cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"  # ✅ 用 CMD 运行 `.bat`
+      - name: 🛠 运行 `.bat` 转换脚本
+        run: |
+          echo "启动转换脚本..." >> conversion.log
+          cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"
         shell: cmd
 
       - name: 📦 打包转换后的 `.mrs` 文件
@@ -33,13 +36,13 @@ jobs:
       - name: 🚀 生成 Release 版本号
         id: get_date
         run: echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash  # ✅ 生成 YYYYMMDD 版本号
+        shell: bash
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: rules/mrs-release.zip
-          tag_name: ${{ env.TAG_NAME }}  # ✅ 使用 YYYYMMDD 作为版本号
+          tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🚀 **最新转换规则**
