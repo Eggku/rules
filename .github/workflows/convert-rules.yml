@@ -24,6 +24,11 @@ jobs:
           )
         shell: cmd
 
+      - name: 🛠 赋予 `mihomo.exe` 执行权限
+        run: |
+          icacls config\mihomo.exe /grant Everyone:F
+        shell: cmd
+
       - name: ⚙️ 测试 `mihomo.exe` 是否能运行
         run: config\mihomo.exe --help
         shell: cmd
@@ -45,6 +50,11 @@ jobs:
         with:
           name: conversion-log
           path: conversion.log
+
+      - name: ✅ 检查 `.mrs` 文件是否生成
+        run: |
+          dir rules\mrs | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+        shell: cmd
 
       - name: 📦 打包转换后的 `.mrs` 文件
         run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
