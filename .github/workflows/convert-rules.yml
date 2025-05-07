@@ -1,4 +1,5 @@
 name: 自动转换并发布 Release
+
 on:
   schedule:
     - cron: "0 0 * * *"
@@ -22,8 +23,26 @@ jobs:
           dir config
         shell: cmd
 
+      - name: ⚙️ 测试 mihomo.exe 是否能运行
+        run: config\\mihomo.exe --help
+        shell: cmd
+
       - name: 🛠 运行 .bat 转换脚本
-        run: cmd /c config\auto-convert.bat
+        run: cmd /c config\\auto-convert.bat
+
+      - name: 📂 列出输出目录内容
+        run: dir rules\\mrs
+        shell: cmd
+
+      - name: 🧪 查看转换日志
+        run: type conversion.log
+        shell: cmd
+
+      - name: 📤 上传转换日志
+        uses: actions/upload-artifact@v4
+        with:
+          name: conversion-log
+          path: conversion.log
 
       - name: 📦 打包转换后的 .mrs 文件
         run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
@@ -45,13 +64,3 @@ jobs:
             - **文件:** `.mrs` 规则集
           draft: false
           prerelease: false
-
-      - name: 📤 上传转换日志
-        uses: actions/upload-artifact@v4
-        with:
-          name: conversion-log
-          path: conversion.log
-
-      - name: 📂 列出输出目录内容
-        run: dir rules\mrs
-        shell: cmd
