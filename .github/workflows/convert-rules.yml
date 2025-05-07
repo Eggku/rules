@@ -47,7 +47,7 @@ jobs:
           prerelease: false
 
       - name: 📤 上传转换日志
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: conversion-log
           path: conversion.log
