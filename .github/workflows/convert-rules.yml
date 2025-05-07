@@ -30,10 +30,7 @@ jobs:
 
       - name: ✅ 检查 `.mrs` 文件是否生成
         run: |
-          if not exist rules/mrs/*.mrs (
-            echo "⚠️ 错误：未找到转换后的 .mrs 文件！" >> conversion.log
-            exit 1
-          )
+          dir rules/mrs | findstr ".mrs" || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: cmd
 
       - name: 📦 打包转换后的 `.mrs` 文件
