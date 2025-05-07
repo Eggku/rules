@@ -106,10 +106,10 @@ payload:
 🚀 Mihomo 域名&IP锚点配置：
 ```yaml
 rule-providers: 
-  domain-direct: {<<: *DomainMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs"}
-  domain-proxy:  {<<: *DomainMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs"}
-  ip-direct:     {<<: *IPcidrMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs"}
-  ip-proxy:      {<<: *IPcidrMrs, url:"https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs"}
+  domain-direct: {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-direct.mrs}
+  domain-proxy:  {<<: *DomainMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/domain-proxy.mrs}
+  ip-direct:     {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-direct.mrs}
+  ip-proxy:      {<<: *IPcidrMrs, url: https://raw.githubusercontent.com/Eggku/rules/main/ip-proxy.mrs}
 ```
 ⚙ 规则应用：(代理策略组自行修改)。
 ```yaml
