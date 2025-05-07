@@ -44,7 +44,7 @@ jobs:
       # ----------------------------------------
       - name: 🔍 检查 YAML 文件存在性
         run: |
-          if not exist rules\domain-dircet.yaml (
+          if not exist rules\domain-direct.yaml (
             echo "❌ 错误：缺少 rules/domain-direct.yaml" && exit 1
           )
           if not exist rules\domain-proxy.yaml (
