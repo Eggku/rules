@@ -16,30 +16,22 @@ jobs:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: 🔄 下载 `mihomo.exe`
+      - name: 🔄 下载 mihomo.exe
         run: |
           curl -L -o config/mihomo.exe "https://your-download-link.com/mihomo.exe"
           dir config
-        shell: pwsh
-
-      - name: 🔒 授权执行 mihomo.exe（可选）
-        run: |
-          icacls config\mihomo.exe
         shell: cmd
 
-      - name: 🛠 运行转换脚本
-        run: config\\auto-convert.bat
-        shell: cmd
+      - name: 🛠 运行 .bat 转换脚本
+        run: cmd /c config\auto-convert.bat
 
-      - name: 📦 打包转换后的 `.mrs` 文件
-        run: |
-          Compress-Archive -Path rules\mrs\* -DestinationPath rules\mrs-release.zip
-        shell: pwsh
+      - name: 📦 打包转换后的 .mrs 文件
+        run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
 
       - name: 🚀 生成 Release 版本号
         id: get_date
-        run: echo "TAG_NAME=$(Get-Date -Format yyyyMMdd)" >> $env:GITHUB_ENV
-        shell: pwsh
+        run: echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
@@ -53,3 +45,13 @@ jobs:
             - **文件:** `.mrs` 规则集
           draft: false
           prerelease: false
+
+      - name: 📤 上传转换日志
+        uses: actions/upload-artifact@v3
+        with:
+          name: conversion-log
+          path: conversion.log
+
+      - name: 📂 列出输出目录内容
+        run: dir rules\mrs
+        shell: cmd
