@@ -2,7 +2,7 @@ name: 自动转换并发布 Release
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # 每天运行
+    - cron: "0 0 * * *"
   push:
     branches:
       - main
@@ -36,12 +36,17 @@ jobs:
         run: config\mihomo.exe --help
         shell: cmd
 
+      - name: 🛠 确保 `rules/mrs/` 目录存在
+        run: |
+          if not exist rules\mrs mkdir rules\mrs
+        shell: cmd
+
       - name: 🛠 运行 `.bat` 转换脚本
         run: cmd /c config\auto-convert.bat
         shell: cmd
 
       - name: 📂 列出 `.mrs` 文件
-        run: dir rules/mrs
+        run: dir "rules\mrs"
         shell: cmd
 
       - name: 🧪 查看转换日志
@@ -56,7 +61,7 @@ jobs:
 
       - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          dir rules/mrs | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+          dir "rules\mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: cmd
 
       - name: 📦 打包 `.mrs` 文件
