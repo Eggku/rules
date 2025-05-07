@@ -12,59 +12,62 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
+    env:
+      WORKSPACE: ${{ github.workspace }}
+      RULES_DIR: ${{ github.workspace }}/rules
+      OUTPUT_DIR: ${{ github.workspace }}/rules/mrs
+
     steps:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
       - name: 📂 初始化目录结构
+        shell: powershell
         run: |
-          mkdir -p rules/mrs
-          mkdir -p config
+          # 精确创建所需目录
+          New-Item -ItemType Directory -Force -Path "$env:OUTPUT_DIR"
+          Write-Output "输出目录路径：$env:OUTPUT_DIR"
 
-      - name: ⚙️ 验证 mihomo.exe 存在
+      - name: 🔍 调试：显示关键路径
+        shell: powershell
         run: |
-          if not exist "config/mihomo.exe" (
-            echo "::error::❌ 关键文件缺失：config/mihomo.exe 未找到！"
+          Write-Output "GitHub 工作区路径：$env:WORKSPACE"
+          Get-ChildItem -Path $env:WORKSPACE -Recurse -Depth 2 | Format-Table FullName
+
+      - name: ⚙️ 验证 mihomo.exe
+        shell: cmd
+        run: |
+          if not exist "%WORKSPACE%\config\mihomo.exe" (
+            echo "::error::❌ 关键文件缺失：mihomo.exe 未找到"
             exit 1
           )
-
-      - name: 🔑 赋予执行权限
-        run: icacls "config/mihomo.exe" /grant Everyone:F
-
-      - name: 🧪 调试：列出初始文件结构
-        run: |
-          echo "=== 目录结构 ==="
-          tree /F
-          echo "================="
+          "%WORKSPACE%\config\mihomo.exe" --version
 
       - name: ⚙️ 执行转换脚本
         shell: cmd
-        run: call config/auto-convert.bat
-        env:
-          GITHUB_WORKSPACE: ${{ github.workspace }}
+        run: call "%WORKSPACE%\config\auto-convert.bat"
 
-      - name: 🧪 调试：检查输出目录
+      - name: 🔍 验证输出文件
+        shell: powershell
         run: |
-          echo "=== 生成的 mrs 文件 ==="
-          dir rules/mrs
-          echo "======================="
-          if not exist "rules/mrs/*.mrs" (
-            echo "::error::❌ 未生成任何 .mrs 文件！"
+          $files = Get-ChildItem -Path "$env:OUTPUT_DIR" -Filter *.mrs
+          if ($files.Count -eq 0) {
+            Write-Output "::error::❌ 未生成任何 .mrs 文件"
             exit 1
-          )
+          }
+          Write-Output "已生成文件：$($files.Name)"
 
-      - name: 📤 上传日志和产物
-        uses: actions/upload-artifact@v4
-        with:
-          name: conversion-artifacts
-          path: |
-            conversion.log
-            rules/mrs/*.mrs
+      - name: 📦 打包规则集
+        shell: powershell
+        run: |
+          $zipPath = "$env:WORKSPACE\rules\mrs-release.zip"
+          Compress-Archive -Path "$env:OUTPUT_DIR\*.mrs" -DestinationPath $zipPath
+          Write-Output "压缩包路径：$zipPath"
 
       - name: 🚀 发布 Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            rules/mrs/*.mrs
-          tag_name: daily-$(date +'%Y%m%d')
-          name: "规则更新 $(date +'%Y%m%d')"
+            ${{ github.workspace }}/rules/mrs-release.zip
+          tag_name: daily-$(date -u +'%Y%m%d')
+          name: "规则更新 $(date -u +'%Y%m%d')"
