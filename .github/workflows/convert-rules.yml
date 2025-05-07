@@ -14,9 +14,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # ----------------------------------------
-      # 1. 准备阶段
-      # ----------------------------------------
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
@@ -24,32 +21,6 @@ jobs:
         run: |
           if not exist config\mihomo.exe (
             echo "❌ 错误：缺少 config/mihomo.exe" && exit 1
-          )
-        shell: cmd
-
-      # ----------------------------------------
-      # 2. 调试目录结构
-      # ----------------------------------------
-      - name: 📂 列出 config\rules 目录内容
-        run: dir /b config\rules
-        shell: cmd
-
-      # ----------------------------------------
-      # 3. 规则转换
-      # ----------------------------------------
-      - name: 🔍 检查 YAML 文件存在性
-        run: |
-          if not exist config\rules\domain-direct.yaml (
-            echo "❌ 错误：缺少 domain-direct.yaml" && exit 1
-          )
-          if not exist config\rules\domain-proxy.yaml (
-            echo "❌ 错误：缺少 domain-proxy.yaml" && exit 1
-          )
-          if not exist config\rules\ip-direct.yaml (
-            echo "❌ 错误：缺少 ip-direct.yaml" && exit 1
-          )
-          if not exist config\rules\ip-proxy.yaml (
-            echo "❌ 错误：缺少 ip-proxy.yaml" && exit 1
           )
         shell: cmd
 
@@ -61,21 +32,13 @@ jobs:
           config\mihomo.exe convert-ruleset ipcidr yaml config\rules\ip-proxy.yaml config\rules\mrs\ip-proxy.mrs
         shell: cmd
 
-      # ----------------------------------------
-      # 4. 验证输出
-      # ----------------------------------------
-      - name: 📂 列出生成的 .mrs 文件
-        run: dir /b config\rules\mrs
-        shell: cmd
-
-      # ----------------------------------------
-      # 5. 动态生成 Release 内容
-      # ----------------------------------------
       - name: 📝 收集生成的文件名
         id: collect_files
         run: |
           cd config\rules\mrs
-          echo "FILES=$(dir /b *.mrs | tr '\n' ',')" >> $GITHUB_OUTPUT
+          dir /b *.mrs | tr "\n" "," > temp.txt
+          set /p FILES=<temp.txt
+          echo "FILES=%FILES:,%=%" >> %GITHUB_OUTPUT%
         shell: cmd
 
       - name: 🚀 生成日期标签
@@ -92,6 +55,6 @@ jobs:
           body: |
             🕒 生成时间: ${{ env.TAG_NAME }}
             📂 生成文件列表:
-            ${{ join(fromJSON('["' + replace(steps.collect_files.outputs.FILES, ',', '","') + '"]')), ' - ') }}
+            - ${{ join( fromJSON( format('[ "{0}" ]', replace(steps.collect_files.outputs.FILES, ',', '", "')) ), '\n- ') }}
           draft: false
           prerelease: false
