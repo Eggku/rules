@@ -1,4 +1,4 @@
-tname: 自动转换并发布 Release
+name: 自动转换并发布 Release
 
 on:
   schedule:
@@ -60,7 +60,7 @@ jobs:
 
       - name: ⚙️ 执行规则转换
         run: |
-          config\mihomo.exe convert-ruleset domain yaml rules\domain-dircet.yaml rules\mrs\domain-direct.mrs
+          config\mihomo.exe convert-ruleset domain yaml rules\domain-direct.yaml rules\mrs\domain-direct.mrs
           config\mihomo.exe convert-ruleset domain yaml rules\domain-proxy.yaml rules\mrs\domain-proxy.mrs
           config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-direct.yaml rules\mrs\ip-direct.mrs
           config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-proxy.yaml rules\mrs\ip-proxy.mrs
