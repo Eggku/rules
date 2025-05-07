@@ -1,4 +1,4 @@
-name: 规则集自动化处理
+name: 自动转换并发布 Release
 on:
   schedule:
     - cron: "0 0 * * *"  # 每 24 小时运行一次（每天午夜）
