@@ -28,10 +28,10 @@ jobs:
         shell: cmd
 
       # ----------------------------------------
-      # 2. 初始化目录
+      # 2. 调试目录结构
       # ----------------------------------------
-      - name: 🗂 创建输出目录
-        run: mkdir config\rules\mrs 2>nul || echo.
+      - name: 📂 列出 config\rules 目录内容
+        run: dir /b config\rules
         shell: cmd
 
       # ----------------------------------------
@@ -62,19 +62,22 @@ jobs:
         shell: cmd
 
       # ----------------------------------------
-      # 4. 收集生成的文件名
+      # 4. 验证输出
       # ----------------------------------------
-      - name: 📝 列出生成的规则文件
-        id: collect_files
-        run: |
-          $files = Get-ChildItem -Path config\rules\mrs\*.mrs | Select-Object -ExpandProperty Name
-          $fileList = $files -join "`n- "
-          echo "::set-output name=file_list::- $fileList"
-        shell: powershell
+      - name: 📂 列出生成的 .mrs 文件
+        run: dir /b config\rules\mrs
+        shell: cmd
 
       # ----------------------------------------
-      # 5. 发布 Release
+      # 5. 动态生成 Release 内容
       # ----------------------------------------
+      - name: 📝 收集生成的文件名
+        id: collect_files
+        run: |
+          cd config\rules\mrs
+          echo "FILES=$(dir /b *.mrs | tr '\n' ',')" >> $GITHUB_OUTPUT
+        shell: cmd
+
       - name: 🚀 生成日期标签
         id: set_tag
         run: |
@@ -88,7 +91,7 @@ jobs:
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🕒 生成时间: ${{ env.TAG_NAME }}
-            📂 生成文件:
-            ${{ steps.collect_files.outputs.file_list }}
+            📂 生成文件列表:
+            ${{ join(fromJSON('["' + replace(steps.collect_files.outputs.FILES, ',', '","') + '"]')), ' - ') }}
           draft: false
           prerelease: false
