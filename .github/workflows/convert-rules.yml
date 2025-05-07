@@ -35,7 +35,7 @@ jobs:
         shell: cmd
 
       - name: 🛠 列出 `rules/` 目录内容
-        run: dir rules
+        run: dir "rules"
         shell: cmd
 
       - name: ⚙️ 运行 `.yaml` 转换
@@ -56,12 +56,12 @@ jobs:
         shell: cmd
 
       - name: 📂 列出 `.mrs` 文件
-        run: dir rules/mrs
+        run: dir "rules/mrs"
         shell: cmd
 
       - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          dir rules/mrs | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+          dir "rules/mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: cmd
 
       - name: 📦 打包 `.mrs` 文件
