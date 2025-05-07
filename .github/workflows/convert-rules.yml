@@ -24,85 +24,55 @@ jobs:
           )
         shell: cmd
 
+      - name: 🛠 创建规则目录结构
+        run: |
+          mkdir config\rules 2>nul || echo.
+          mkdir config\rules\mrs 2>nul || echo.
+        shell: cmd
+
       - name: 🔍 检查 YAML 文件是否存在
         run: |
-          if not exist rules\domain-direct.yaml (
-            echo "❌ 错误：缺少 rules\domain-direct.yaml" && exit 1
+          if not exist config\rules\mrs\domain-direct.yaml (
+            echo "❌ 错误：缺少 config\rules\mrs\domain-direct.yaml" && exit 1
           )
-          if not exist rules\domain-proxy.yaml (
-            echo "❌ 错误：缺少 rules\domain-proxy.yaml" && exit 1
+          if not exist config\rules\mrs\domain-proxy.yaml (
+            echo "❌ 错误：缺少 config\rules\mrs\domain-proxy.yaml" && exit 1
           )
-          if not exist rules\ip-direct.yaml (
-            echo "❌ 错误：缺少 rules\ip-direct.yaml" && exit 1
+          if not exist config\rules\mrs\ip-direct.yaml (
+            echo "❌ 错误：缺少 config\rules\mrs\ip-direct.yaml" && exit 1
           )
-          if not exist rules\ip-proxy.yaml (
-            echo "❌ 错误：缺少 rules\ip-proxy.yaml" && exit 1
+          if not exist config\rules\mrs\ip-proxy.yaml (
+            echo "❌ 错误：缺少 config\rules\mrs\ip-proxy.yaml" && exit 1
           )
         shell: cmd
 
-      - name: 🛠 赋予 `mihomo.exe` 执行权限
-        run: icacls config\mihomo.exe /grant Everyone:F /T
-        shell: cmd
-
-      - name: 🛠 确保 `rules/` 目录存在
+      - name: ⚙️ 运行规则转换
         run: |
-          if not exist rules (
-            mkdir rules
-          )
-          if not exist rules\mrs (
-            mkdir rules\mrs
-          )
+          config\mihomo.exe convert-ruleset domain yaml config\rules\mrs\domain-direct.yaml config\rules\mrs\domain-direct.mrs
+          config\mihomo.exe convert-ruleset domain yaml config\rules\mrs\domain-proxy.yaml config\rules\mrs\domain-proxy.mrs
+          config\mihomo.exe convert-ruleset ipcidr yaml config\rules\mrs\ip-direct.yaml config\rules\mrs\ip-direct.mrs
+          config\mihomo.exe convert-ruleset ipcidr yaml config\rules\mrs\ip-proxy.yaml config\rules\mrs\ip-proxy.mrs
         shell: cmd
 
-      - name: 🛠 列出 `rules/` 目录内容
-        run: dir "rules"
-        shell: cmd
-
-      - name: ⚙️ 运行 `.yaml` 转换
-        run: |
-          config\mihomo.exe convert-ruleset domain yaml rules\domain-direct.yaml rules\mrs\domain-direct.mrs
-          config\mihomo.exe convert-ruleset domain yaml rules\domain-proxy.yaml rules\mrs\domain-proxy.mrs
-          config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-direct.yaml rules\mrs\ip-direct.mrs
-          config\mihomo.exe convert-ruleset ipcidr yaml rules\ip-proxy.yaml rules\mrs\ip-proxy.mrs
-        shell: cmd
-
-      - name: 🧪 强制输出 `conversion.log`
-        run: |
-          if exist conversion.log (
-            type conversion.log
-          ) else (
-            echo "⚠️ 错误：未找到 conversion.log，可能转换过程未执行！"
-          )
-        shell: cmd
-
-      - name: 📂 列出 `.mrs` 文件
-        run: dir "rules/mrs"
-        shell: cmd
-
-      - name: ✅ 确保 `.mrs` 文件已生成
-        run: |
-          dir "rules\mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
-        shell: cmd
-
-      - name: 📦 打包 `.mrs` 文件
-        run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
+      - name: 📦 打包生成文件
+        run: powershell Compress-Archive -Path config\rules\mrs\*.mrs -DestinationPath config\rules\mrs-release.zip
         shell: powershell
 
-      - name: 🚀 生成 Release 版本号
+      - name: 🚀 生成版本号
         id: get_date
         run: |
           echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" | Out-File -FilePath $env:GITHUB_ENV -Append
         shell: powershell
 
-      - name: 🚀 发布 GitHub Release
+      - name: 🚀 发布 Release
         uses: softprops/action-gh-release@v1
         with:
-          files: rules/mrs-release.zip
+          files: config/rules/mrs-release.zip
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🚀 最新转换规则
             - 更新时间: ${{ env.TAG_NAME }}
-            - 文件: `.mrs` 规则集
+            - 文件路径: `config/rules/mrs/`
           draft: false
           prerelease: false
