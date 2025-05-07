@@ -4,8 +4,7 @@ on:
   schedule:
     - cron: "0 0 * * *"
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -17,76 +16,55 @@ jobs:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: ⚙️ 确保 `mihomo.exe` 存在
+      - name: 📂 初始化目录结构
         run: |
-          if not exist config\mihomo.exe (
-            echo "⚠️ 错误：未找到 config\mihomo.exe，请手动上传！" && exit 1
+          mkdir -p rules/mrs
+          mkdir -p config
+
+      - name: ⚙️ 验证 mihomo.exe 存在
+        run: |
+          if not exist "config/mihomo.exe" (
+            echo "::error::❌ 关键文件缺失：config/mihomo.exe 未找到！"
+            exit 1
           )
-        shell: cmd
 
-      - name: 🛠 赋予 `mihomo.exe` 执行权限
-        run: icacls config\mihomo.exe /grant Everyone:F /T
-        shell: cmd
+      - name: 🔑 赋予执行权限
+        run: icacls "config/mihomo.exe" /grant Everyone:F
 
-      - name: ⚙️ 检查 Windows 版本
-        run: systeminfo
-        shell: cmd
-
-      - name: ⚙️ 测试 `mihomo.exe` 是否能运行
-        run: config\mihomo.exe --help
-        shell: cmd
-
-      - name: 🛠 确保 `rules/mrs/` 目录存在
+      - name: 🧪 调试：列出初始文件结构
         run: |
-          if not exist rules\mrs mkdir rules\mrs
-        shell: cmd
+          echo "=== 目录结构 ==="
+          tree /F
+          echo "================="
 
-      - name: 🛠 运行 `.bat` 转换脚本
-        run: cmd /c config\auto-convert.bat
+      - name: ⚙️ 执行转换脚本
         shell: cmd
+        run: call config/auto-convert.bat
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
 
-      - name: 📂 列出 `.mrs` 文件
-        run: dir "rules\mrs"
-        shell: cmd
+      - name: 🧪 调试：检查输出目录
+        run: |
+          echo "=== 生成的 mrs 文件 ==="
+          dir rules/mrs
+          echo "======================="
+          if not exist "rules/mrs/*.mrs" (
+            echo "::error::❌ 未生成任何 .mrs 文件！"
+            exit 1
+          )
 
-      - name: 🧪 查看转换日志
-        run: type conversion.log
-        shell: cmd
-
-      - name: 📤 上传转换日志
+      - name: 📤 上传日志和产物
         uses: actions/upload-artifact@v4
         with:
-          name: conversion-log
-          path: conversion.log
+          name: conversion-artifacts
+          path: |
+            conversion.log
+            rules/mrs/*.mrs
 
-      - name: ✅ 确保 `.mrs` 文件已生成
-        run: |
-          dir "rules\mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
-        shell: cmd
-
-      - name: 📦 打包 `.mrs` 文件
-        run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
-        shell: powershell
-
-      - name: 🚀 生成 Release 版本号
-        id: get_date
-        run: |
-          echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" | Out-File -FilePath $env:GITHUB_ENV -Append
-        shell: powershell
-
-      - name: 🚀 查看环境变量（调试）
-        run: type $env:GITHUB_ENV
-        shell: powershell
-
-      - name: 🚀 发布 GitHub Release
+      - name: 🚀 发布 Release
         uses: softprops/action-gh-release@v1
         with:
-          files: rules/mrs-release.zip
-          tag_name: ${{ env.TAG_NAME }}
-          name: "规则更新 - ${{ env.TAG_NAME }}"
-          body: |
-            🚀 最新转换规则
-            - 更新时间: ${{ env.TAG_NAME }}
-            - 文件: `.mrs` 规则集
-          draft: false
-          prerelease: false
+          files: |
+            rules/mrs/*.mrs
+          tag_name: daily-$(date +'%Y%m%d')
+          name: "规则更新 $(date +'%Y%m%d')"
