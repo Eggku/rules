@@ -2,7 +2,7 @@ name: 自动转换并发布 Release
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *"  # 每天运行
   push:
     branches:
       - main
@@ -25,7 +25,7 @@ jobs:
         shell: cmd
 
       - name: 🛠 赋予 `mihomo.exe` 执行权限
-        run: icacls config\mihomo.exe /grant Everyone:F
+        run: icacls config\mihomo.exe /grant Everyone:F /T
         shell: cmd
 
       - name: ⚙️ 检查 Windows 版本
