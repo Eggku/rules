@@ -15,5 +15,5 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 🔄 运行 `.bat` 转换脚本
-        run: cmd /c config/auto-convert.bat  # ✅ 用 CMD 执行 .bat 文件
+        run: cmd /c ".\config\auto-convert.bat"   # ✅ 用 CMD 执行 .bat 文件
         shell: cmd  # 强制使用 CMD 运行
