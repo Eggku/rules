@@ -24,7 +24,10 @@
 - 123.45.67.0/24  direct  # IP  直连
 - 123.45.67.0/24  proxy   # IP  代理
 ```
-
+```yaml
+⛔域名完整匹配示例：
+- services.googleapis.cn 仅匹配这个域名，不影响其他 googleapis.cn 子域名。
+```
 🛠 提交方式：
 <br><br>
 📢 Telegram 机器人: @YourProjectBot (https://t.me/YourProjectBot)  
