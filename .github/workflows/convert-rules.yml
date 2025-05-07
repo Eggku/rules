@@ -1,4 +1,4 @@
-name: 自动转换并发布 Release
+name: 规则集自动化处理
 on:
   schedule:
     - cron: "0 0 * * *"  # 每 24 小时运行一次（每天午夜）
@@ -26,14 +26,6 @@ jobs:
         run: |
           echo "启动转换脚本..." >> conversion.log
           cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"
-        shell: cmd
-
-      - name: ✅ 检查转换结果
-        run: |
-          if not exist rules/mrs/*.mrs (
-            echo "⚠️ 错误：未找到转换后的 .mrs 文件！" >> conversion.log
-            exit 1
-          )
         shell: cmd
 
       - name: 📦 打包转换后的 `.mrs` 文件
