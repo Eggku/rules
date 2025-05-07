@@ -16,14 +16,14 @@ if not exist "%MIHOMO_EXE%" (
     exit 1
 )
 
-:: 创建 `mrs` 目录（如果不存在）
+:: 创建mrs目录（如果不存在）
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 echo 转换日志 > "%LOG_FILE%"
 echo 开始时间: %date% %time% >> "%LOG_FILE%"
 echo ==============================
 
-:: 遍历所有 `.yaml` 文件
+:: 遍历所有 .yaml 文件
 for /r "%RULES_DIR%" %%f in (*.yaml) do (
     set "ip_found=0"
 
