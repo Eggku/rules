@@ -10,18 +10,26 @@ set "OUTPUT_DIR=%RULES_DIR%\mrs"
 set "LOG_FILE=%GITHUB_WORKSPACE%\conversion.log"
 set "MIHOMO_EXE=%GITHUB_WORKSPACE%\config\mihomo.exe"
 
-:: 创建mrs目录（如果不存在）
+:: 创建 `mrs` 目录（如果不存在）
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 echo 转换日志 > "%LOG_FILE%"
 echo 开始时间: %date% %time% >> "%LOG_FILE%"
 echo ==============================
 
-:: 遍历所有 .yaml 文件
+:: 测试 `mihomo.exe` 是否能运行
+echo "测试 mihomo.exe..." >> "%LOG_FILE%"
+config\mihomo.exe --help >> "%LOG_FILE%" 2>&1
+if errorlevel 1 (
+    echo "⚠️ 错误：mihomo.exe 无法运行！" >> "%LOG_FILE%"
+    exit 255
+)
+
+:: 遍历所有 `.yaml` 文件
 for /r "%RULES_DIR%" %%f in (*.yaml) do (
     set "ip_found=0"
 
-    :: 检查是否为 IP 规则（排除注释干扰）
+    :: 检查是否为 IP 规则
     findstr /r /c:"^  - [0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*/[0-9][0-9]*" "%%f" >nul
     if !errorlevel! equ 0 set ip_found=1
 
@@ -30,24 +38,15 @@ for /r "%RULES_DIR%" %%f in (*.yaml) do (
     set "out_file=%OUTPUT_DIR%\!filename!.mrs"
 
     :: 执行转换
-    echo 正在转换 %%~nxf >> "%LOG_FILE%"
-    if !ip_found! equ 1 (
-        "%MIHOMO_EXE%" convert-ruleset ipcidr yaml "%%f" "!out_file!"
-    ) else (
-        "%MIHOMO_EXE%" convert-ruleset domain yaml "%%f" "!out_file!"
-    )
+    echo "正在转换 %%~nxf ..." >> "%LOG_FILE%"
+    config\mihomo.exe convert-ruleset domain yaml "%%f" "!out_file!" >> "%LOG_FILE%" 2>&1
 
     :: 检测错误
     if errorlevel 1 (
-        echo [失败] %%~nxf >> "%LOG_FILE%"
-        timeout /t 5
+        echo "[失败] %%~nxf" >> "%LOG_FILE%"
         exit 1
     ) else (
-        echo [成功] %%~nxf >> "%LOG_FILE%"
+        echo "[成功] %%~nxf" >> "%LOG_FILE%"
     )
     echo ------------------------------
 )
-
-:: 显示生成的文件列表
-dir /b "%OUTPUT_DIR%" >> "%LOG_FILE%"
-echo 转换完成！ >> "%LOG_FILE%"
