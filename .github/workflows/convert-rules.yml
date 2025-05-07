@@ -1,0 +1,35 @@
+name: 自动转换规则
+on:
+  schedule:
+    - cron: "0 */12 * * *"  # 每 12 小时执行一次
+  push:
+    branches:
+      - main  # 监听 main 分支推送
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  convert-rules:
+    runs-on: windows-latest
+    steps:
+      - name: 🛠️ 检出仓库代码
+        uses: actions/checkout@v3
+
+      - name: 🔧 设置运行环境
+        run: |
+          echo "正在设置环境..."
+          mkdir rules/mrs || echo "目录已存在"
+
+      - name: 🔄 执行转换脚本
+        run: |
+          call auto-convert.bat
+
+      - name: 📂 生成转换后文件列表
+        run: dir /b rules/mrs
+
+      - name: 🚀 提交并推送更新
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@example.com"
+          git add .
+          git commit -m "🔄 自动转换更新 | $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
