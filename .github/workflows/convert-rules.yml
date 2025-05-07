@@ -2,7 +2,7 @@ name: 自动转换并发布 Release
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # 每天 UTC 时间 00:00 运行
+    - cron: "0 0 * * *"
   push:
     branches:
       - main
@@ -19,8 +19,6 @@ jobs:
       # ----------------------------------------
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # 关键：确保拉取完整代码
 
       - name: ⚙️ 验证 mihomo.exe 存在
         run: |
@@ -30,37 +28,32 @@ jobs:
         shell: cmd
 
       # ----------------------------------------
-      # 2. 初始化目录结构
+      # 2. 初始化目录
       # ----------------------------------------
-      - name: 🗂 创建 mrs 输出目录
-        run: |
-          mkdir config\rules\mrs 2>nul || echo.
-        shell: cmd
-
-      - name: 📂 调试：列出 config\rules 目录内容
-        run: dir /b config\rules
+      - name: 🗂 创建输出目录
+        run: mkdir config\rules\mrs 2>nul || echo.
         shell: cmd
 
       # ----------------------------------------
-      # 3. 规则转换阶段
+      # 3. 规则转换
       # ----------------------------------------
       - name: 🔍 检查 YAML 文件存在性
         run: |
           if not exist config\rules\domain-direct.yaml (
-            echo "❌ 错误：缺少 config/rules/domain-direct.yaml" && exit 1
+            echo "❌ 错误：缺少 domain-direct.yaml" && exit 1
           )
           if not exist config\rules\domain-proxy.yaml (
-            echo "❌ 错误：缺少 config/rules/domain-proxy.yaml" && exit 1
+            echo "❌ 错误：缺少 domain-proxy.yaml" && exit 1
           )
           if not exist config\rules\ip-direct.yaml (
-            echo "❌ 错误：缺少 config/rules/ip-direct.yaml" && exit 1
+            echo "❌ 错误：缺少 ip-direct.yaml" && exit 1
           )
           if not exist config\rules\ip-proxy.yaml (
-            echo "❌ 错误：缺少 config/rules/ip-proxy.yaml" && exit 1
+            echo "❌ 错误：缺少 ip-proxy.yaml" && exit 1
           )
         shell: cmd
 
-      - name: ⚙️ 执行规则转换
+      - name: ⚙️ 执行转换命令
         run: |
           config\mihomo.exe convert-ruleset domain yaml config\rules\domain-direct.yaml config\rules\mrs\domain-direct.mrs
           config\mihomo.exe convert-ruleset domain yaml config\rules\domain-proxy.yaml config\rules\mrs\domain-proxy.mrs
@@ -69,27 +62,19 @@ jobs:
         shell: cmd
 
       # ----------------------------------------
-      # 4. 验证输出文件
+      # 4. 收集生成的文件名
       # ----------------------------------------
-      - name: 🧪 检查 .mrs 文件生成
+      - name: 📝 列出生成的规则文件
+        id: collect_files
         run: |
-          dir config\rules\mrs | findstr ".mrs" >nul || (
-            echo "❌ 错误：未生成 .mrs 文件" && exit 1
-          )
-        shell: cmd
-
-      # ----------------------------------------
-      # 5. 打包发布阶段
-      # ----------------------------------------
-      - name: 📦 压缩规则文件
-        run: |
-          Compress-Archive -Path config\rules\mrs\*.mrs -DestinationPath config\rules\mrs-release.zip
-          if (-not (Test-Path config\rules\mrs-release.zip)) {
-            Write-Error "❌ ZIP 文件未生成"
-            exit 1
-          }
+          $files = Get-ChildItem -Path config\rules\mrs\*.mrs | Select-Object -ExpandProperty Name
+          $fileList = $files -join "`n- "
+          echo "::set-output name=file_list::- $fileList"
         shell: powershell
 
+      # ----------------------------------------
+      # 5. 发布 Release
+      # ----------------------------------------
       - name: 🚀 生成日期标签
         id: set_tag
         run: |
@@ -99,11 +84,11 @@ jobs:
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: config/rules/mrs-release.zip
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🕒 生成时间: ${{ env.TAG_NAME }}
-            📂 文件路径: `config/rules/mrs/`
+            📂 生成文件:
+            ${{ steps.collect_files.outputs.file_list }}
           draft: false
           prerelease: false
