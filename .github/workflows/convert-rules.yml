@@ -25,8 +25,11 @@ jobs:
         shell: cmd
 
       - name: 🛠 赋予 `mihomo.exe` 执行权限
-        run: |
-          icacls config\mihomo.exe /grant Everyone:F
+        run: icacls config\mihomo.exe /grant Everyone:F
+        shell: cmd
+
+      - name: ⚙️ 检查 Windows 版本
+        run: systeminfo
         shell: cmd
 
       - name: ⚙️ 测试 `mihomo.exe` 是否能运行
