@@ -17,20 +17,23 @@ jobs:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: 🔄 下载 mihomo.exe
+      - name: ⚙️ 确保 `mihomo.exe` 存在
         run: |
-          curl -L -o config/mihomo.exe "https://github.com/mihomo/mihomo/releases/latest/download/mihomo-windows-amd64.exe"
-          shell: bash
-
-      - name: ⚙️ 测试 mihomo.exe 是否能运行
-        run: config\\mihomo.exe --help
+          if not exist config\mihomo.exe (
+            echo "⚠️ 错误：未找到 config\mihomo.exe，请手动上传！" && exit 1
+          )
         shell: cmd
 
-      - name: 🛠 运行 .bat 转换脚本
-        run: cmd /c config\\auto-convert.bat
+      - name: ⚙️ 测试 `mihomo.exe` 是否能运行
+        run: config\mihomo.exe --help
+        shell: cmd
+
+      - name: 🛠 运行 `.bat` 转换脚本
+        run: cmd /c config\auto-convert.bat
+        shell: cmd
 
       - name: 📂 列出输出目录内容
-        run: dir rules\\mrs
+        run: dir rules\mrs
         shell: cmd
 
       - name: 🧪 查看转换日志
@@ -43,13 +46,14 @@ jobs:
           name: conversion-log
           path: conversion.log
 
-      - name: 📦 打包转换后的 .mrs 文件
+      - name: 📦 打包转换后的 `.mrs` 文件
         run: powershell Compress-Archive -Path rules/mrs/* -DestinationPath rules/mrs-release.zip
+        shell: powershell
 
       - name: 🚀 生成 Release 版本号
         id: get_date
-        run: echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
+        run: echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" >> $GITHUB_ENV
+        shell: powershell
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
@@ -58,8 +62,8 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
-            🚀 **最新转换规则**
-            - **更新时间:** ${{ env.TAG_NAME }}
-            - **文件:** `.mrs` 规则集
+            🚀 最新转换规则
+            - 更新时间: ${{ env.TAG_NAME }}
+            - 文件: `.mrs` 规则集
           draft: false
           prerelease: false
