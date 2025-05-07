@@ -14,6 +14,11 @@ jobs:
       - name: 🛠️ 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: 🔄 运行 `.bat` 转换脚本
-        run: cmd /c ".\config\auto-convert.bat"   # ✅ 用 CMD 执行 .bat 文件
-        shell: cmd  # 强制使用 CMD 运行
+      - name: 🔄 下载 `mihomo.exe`
+        run: |
+          curl -L -o config/mihomo.exe "https://your-download-link.com/mihomo.exe"
+        shell: bash  # 使用 Bash 运行 curl
+
+      - name: 🛠️ 运行 `.bat` 转换脚本
+        run: cmd /c "%GITHUB_WORKSPACE%\config\auto-convert.bat"   # ✅ 用 CMD 执行 .bat 文件
+        shell: cmd  # 强制 CMD 运行
