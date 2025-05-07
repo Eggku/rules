@@ -33,8 +33,8 @@ jobs:
           if not exist rules (
             mkdir rules
           )
-          if not exist rules/mrs (
-            mkdir rules/mrs
+          if not exist rules\mrs (
+            mkdir rules\mrs
           )
         shell: cmd
 
@@ -65,7 +65,7 @@ jobs:
 
       - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          dir "rules/mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+          dir "rules\mrs" | findstr ".mrs" >nul || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: cmd
 
       - name: 📦 打包 `.mrs` 文件
