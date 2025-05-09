@@ -2,7 +2,7 @@ name: 自动转换并发布 Release
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *"  # 每天运行一次
   push:
     branches:
       - main
@@ -10,88 +10,61 @@ on:
 
 jobs:
   convert-rules:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      # ----------------------------------------
-      # 1. 准备阶段
-      # ----------------------------------------
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: ⚙️ 验证 mihomo.exe 存在
+      - name: 🔄 下载 Linux 版 Mihomo
         run: |
-          if not exist config\mihomo.exe (
-            echo "❌ 错误：缺少 config/mihomo.exe" && exit 1
-          )
-        shell: cmd
+          wget -O mihomo https://github.com/MetaCubeX/mihomo/releases/latest/download/mihomo-linux-amd64
+          chmod +x mihomo
+        shell: bash
 
-      # ----------------------------------------
-      # 2. 目录调试
-      # ----------------------------------------
-      - name: 📂 列出 config\rules 目录
-        run: dir /b config\rules
-        shell: cmd
-
-      # ----------------------------------------
-      # 3. 规则转换
-      # ----------------------------------------
-      - name: 🔍 检查 YAML 文件存在性
+      - name: 🛠 确保 `rules/` 目录存在
         run: |
-          if not exist config\rules\domain-direct.yaml (
-            echo "❌ 错误：缺少 domain-direct.yaml" && exit 1
-          )
-          if not exist config\rules\domain-proxy.yaml (
-            echo "❌ 错误：缺少 domain-proxy.yaml" && exit 1
-          )
-          if not exist config\rules\ip-direct.yaml (
-            echo "❌ 错误：缺少 ip-direct.yaml" && exit 1
-          )
-          if not exist config\rules\ip-proxy.yaml (
-            echo "❌ 错误：缺少 ip-proxy.yaml" && exit 1
-          )
-        shell: cmd
+          mkdir -p rules/mrs
+          ls -l rules
+        shell: bash
 
-      - name: ⚙️ 执行规则转换
+      - name: ⚙️ 运行 `.yaml` 转换
         run: |
-          config\mihomo.exe convert-ruleset domain yaml config\rules\domain-direct.yaml config\rules\mrs\domain-direct.mrs
-          config\mihomo.exe convert-ruleset domain yaml config\rules\domain-proxy.yaml config\rules\mrs\domain-proxy.mrs
-          config\mihomo.exe convert-ruleset ipcidr yaml config\rules\ip-direct.yaml config\rules\mrs\ip-direct.mrs
-          config\mihomo.exe convert-ruleset ipcidr yaml config\rules\ip-proxy.yaml config\rules\mrs\ip-proxy.mrs
-        shell: cmd
+          ./mihomo convert-ruleset domain yaml rules/domain-direct.yaml rules/mrs/domain-direct.mrs
+          ./mihomo convert-ruleset domain yaml rules/domain-proxy.yaml rules/mrs/domain-proxy.mrs
+          ./mihomo convert-ruleset ipcidr yaml rules/ip-direct.yaml rules/mrs/ip-direct.mrs
+          ./mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs
+        shell: bash
 
-      # ----------------------------------------
-      # 4. 生成文件列表
-      # ----------------------------------------
-      - name: 📝 收集生成的规则文件
-        id: collect_files
-        run: |
-          cd config\rules\mrs
-          echo "FILES=- " > temp.txt
-          dir /b *.mrs | findstr /n ^^ >> temp.txt
-          set /p FILES=<temp.txt
-          echo "FILES=%FILES::= %" >> %GITHUB_OUTPUT%
-          echo "FILES=%FILES:\n= %" >> %GITHUB_OUTPUT%
-        shell: cmd
+      - name: 📂 列出 `.mrs` 文件
+        run: ls -l rules/mrs
+        shell: bash
 
-      # ----------------------------------------
-      # 5. 发布 Release
-      # ----------------------------------------
-      - name: 🚀 生成日期标签
-        id: set_tag
+      - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          echo "TAG_NAME=$(Get-Date -Format 'yyyyMMdd')" | Out-File -FilePath $env:GITHUB_ENV -Append
-        shell: powershell
+          ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+        shell: bash
+
+      - name: 📦 打包 `.mrs` 文件
+        run: zip -r rules/mrs-release.zip rules/mrs/*
+        shell: bash
+
+      - name: 🚀 生成 Release 版本号
+        id: get_date
+        run: |
+          echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
+        shell: bash
 
       - name: 🚀 发布 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          files: rules/mrs-release.zip
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
-            🕒 生成时间: ${{ env.TAG_NAME }}
-            📂 生成文件列表:
-            ${{ steps.collect_files.outputs.FILES }}
+            🚀 最新转换规则
+            - 更新时间: ${{ env.TAG_NAME }}
+            - 文件: `.mrs` 规则集
           draft: false
           prerelease: false
