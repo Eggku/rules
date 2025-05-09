@@ -55,10 +55,10 @@ jobs:
         with:
           files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件，而不是 `.zip`
           tag_name: ${{ env.TAG_NAME }}
-          name: "规则更新 - ${{ env.TAG_NAME }}"
+          name: "Mihomo - ${{ env.TAG_NAME }}"
           body: |
-            🚀 最新转换规则
+            📌 Mihomo/Clash 规则整理
             - 更新时间: ${{ env.TAG_NAME }}
-            - 直接上传 `.mrs` 规则集
+            - 💦 Mihomo/Clash 收录[🐟漏网之鱼]未被cn_domain(国内)或geolocation-!cn(国外)收录的规则集，帮助您更精准地管理代理/直连设置。
           draft: false
           prerelease: false
