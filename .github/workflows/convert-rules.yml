@@ -29,42 +29,34 @@ jobs:
 
       - name: ⚙️ 运行 `.yaml` 转换（使用本地 Mihomo）
         run: |
-          config/mihomo convert-ruleset domain yaml rules/domain-direct.yaml rules/mrs/domain-direct.mrs
-          config/mihomo convert-ruleset domain yaml rules/domain-proxy.yaml rules/mrs/domain-proxy.mrs
-          config/mihomo convert-ruleset ipcidr yaml rules/ip-direct.yaml rules/mrs/ip-direct.mrs
-          config/mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs
+          config/mihomo convert-ruleset domain yaml rules/domain-direct.yaml rules/mrs/domain-direct.mrs || echo "⚠️ domain-direct 规则转换失败"
+          config/mihomo convert-ruleset domain yaml rules/domain-proxy.yaml rules/mrs/domain-proxy.mrs || echo "⚠️ domain-proxy 规则转换失败"
+          config/mihomo convert-ruleset ipcidr yaml rules/ip-direct.yaml rules/mrs/ip-direct.mrs || echo "⚠️ ip-direct 规则转换失败"
+          config/mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs || echo "⚠️ ip-proxy 规则转换失败"
         shell: bash
 
       - name: 📂 列出 `.mrs` 文件
-        run: ls -l rules/mrs
+        run: ls -l rules/mrs || echo "⚠️ `rules/mrs` 目录为空，可能转换失败"
         shell: bash
 
       - name: ✅ 确保 `.mrs` 文件已生成
         run: |
-          ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
+          ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 `.mrs` 文件！" && exit 1)
         shell: bash
 
-      - name: 🚀 生成 Release 版本号
-        id: get_date
-        run: |
-          echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
-        shell: bash
-
-      - name: 🚀 发布 GitHub Release（包含 `.mrs` 直链）
+      - name: 🚀 发布 GitHub Release（始终更新 `latest`）
         uses: softprops/action-gh-release@v1
         with:
           files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件
-          tag_name: ${{ env.TAG_NAME }}
-          name: "Mihomo - ${{ env.TAG_NAME }}"
+          tag_name: latest  # 🔄 始终覆盖 `latest` 这个 Release
+          name: "Mihomo - 最新版"
           body: |
-            📌 **Mihomo/Clash 规则整理**
-            - 更新时间: ${{ env.TAG_NAME }}
-
-            💾 **规则下载（最新直链）**
-            - [域名直连规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/domain-direct.mrs)
-            - [域名代理规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/domain-proxy.mrs)
-            - [IP 直连规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/ip-direct.mrs)
-            - [IP 代理规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/ip-proxy.mrs)
+            📌 **Mihomo/Clash 规则整理（始终保持最新）**
+            - 💾 固定下载链接：
+            - [域名直连规则](https://github.com/${{ github.repository }}/releases/download/latest/domain-direct.mrs)
+            - [域名代理规则](https://github.com/${{ github.repository }}/releases/download/latest/domain-proxy.mrs)
+            - [IP 直连规则](https://github.com/${{ github.repository }}/releases/download/latest/ip-direct.mrs)
+            - [IP 代理规则](https://github.com/${{ github.repository }}/releases/download/latest/ip-proxy.mrs)
 
             🐟 **Mihomo/Clash 收录[🐟漏网之鱼]未被 `cn_domain`（国内）或 `geolocation-!cn`（国外）收录的规则集**，帮助您更精准地管理代理/直连设置。
           draft: false
