@@ -21,6 +21,12 @@ jobs:
         run: chmod +x config/mihomo
         shell: bash
 
+      - name: 🛠 生成更新日期
+        id: date
+        run: |
+          echo "UPDATE_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        shell: bash
+
       - name: 🛠 确保 `rules/mrs/` 目录正确创建
         run: |
           mkdir -p rules/mrs
@@ -48,11 +54,12 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件
-          tag_name: latest  # 🔄 始终覆盖 `latest` 这个 Release
-          name: "Mihomo - 最新版"
+          tag_name: latest  # 🔄 始终覆盖 latest 这个 Release
+          name: "Mihomo (${{ env.UPDATE_DATE }})"
           body: |
-            📌 **Mihomo/Clash 规则整理（始终保持最新）**
-          
+            📌 **Mihomo/Clash 规则整理**
+            - 更新时间: **${{ env.UPDATE_DATE }}**
+
             🐟 **Mihomo/Clash 收录[🐟漏网之鱼]未被 `cn_domain`（国内）或 `geolocation-!cn`（国外）收录的规则集**，帮助您更精准地管理代理/直连设置。
           draft: false
           prerelease: false
