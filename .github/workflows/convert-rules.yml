@@ -52,12 +52,7 @@ jobs:
           name: "Mihomo - 最新版"
           body: |
             📌 **Mihomo/Clash 规则整理（始终保持最新）**
-            - 💾 固定下载链接：
-            - [域名直连规则](https://github.com/${{ github.repository }}/releases/download/latest/domain-direct.mrs)
-            - [域名代理规则](https://github.com/${{ github.repository }}/releases/download/latest/domain-proxy.mrs)
-            - [IP 直连规则](https://github.com/${{ github.repository }}/releases/download/latest/ip-direct.mrs)
-            - [IP 代理规则](https://github.com/${{ github.repository }}/releases/download/latest/ip-proxy.mrs)
-
+          
             🐟 **Mihomo/Clash 收录[🐟漏网之鱼]未被 `cn_domain`（国内）或 `geolocation-!cn`（国外）收录的规则集**，帮助您更精准地管理代理/直连设置。
           draft: false
           prerelease: false
