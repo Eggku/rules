@@ -21,6 +21,12 @@ jobs:
         run: chmod +x config/mihomo
         shell: bash
 
+      - name: 🛠 生成更新日期
+        id: date
+        run: |
+          echo "UPDATE_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        shell: bash
+
       - name: 🛠 确保 `rules/mrs/` 目录正确创建
         run: |
           mkdir -p rules/mrs
@@ -29,13 +35,17 @@ jobs:
 
       - name: ⚙️ 运行 `.yaml` 转换（使用本地 Mihomo）
         run: |
-          config/mihomo convert-ruleset domain yaml rules/domain-direct.yaml rules/mrs/domain-direct.mrs
-          config/mihomo convert-ruleset domain yaml rules/domain-proxy.yaml rules/mrs/domain-proxy.mrs
-          config/mihomo convert-ruleset ipcidr yaml rules/ip-direct.yaml rules/mrs/ip-direct.mrs
-          config/mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs
+          config/mihomo convert-ruleset domain yaml rules/domain-direct.yaml rules/mrs/domain-direct.mrs || echo "⚠️ domain-direct 规则转换失败"
+          config/mihomo convert-ruleset domain yaml rules/domain-proxy.yaml rules/mrs/domain-proxy.mrs || echo "⚠️ domain-proxy 规则转换失败"
+          config/mihomo convert-ruleset ipcidr yaml rules/ip-direct.yaml rules/mrs/ip-direct.mrs || echo "⚠️ ip-direct 规则转换失败"
+          config/mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs || echo "⚠️ ip-proxy 规则转换失败"
         shell: bash
 
-      - name: 📂 确保 `.mrs` 文件已生成
+      - name: 📂 列出 `.mrs` 文件
+        run: ls -l rules/mrs || echo "⚠️ `rules/mrs` 目录为空，可能转换失败"
+        shell: bash
+
+      - name: ✅ 确保 `.mrs` 文件已生成
         run: |
           ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 `.mrs` 文件！" && exit 1)
         shell: bash
@@ -44,7 +54,7 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add rules/mrs/*.mrs
-          git commit -m "🚀 更新 `.mrs` 文件 - $(date +'%Y-%m-%d')"
-          git push origin main
+          git add rules/mrs/*.mrs || echo "⚠️ `.mrs` 文件未找到，Git 可能提交失败"
+          git commit -m "🚀 更新 `.mrs` 文件 - ${{ env.UPDATE_DATE }}" || echo "⚠️ Git commit 失败，可能没有改动"
+          git push origin main || echo "⚠️ Git 推送失败！"
         shell: bash
