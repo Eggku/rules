@@ -17,11 +17,13 @@ jobs:
       - name: 🛠 检出仓库代码
         uses: actions/checkout@v3
 
-      - name: 🔄 下载 Linux 版 Mihomo
+      - name: 🔄 获取最新 Mihomo 版本
         run: |
-          wget -O mihomo https://github.com/MetaCubeX/mihomo/releases/latest/download/mihomo-linux-amd64
-          chmod +x mihomo
-        shell: bash
+         LATEST_VERSION=$(curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep tag_name | awk -F'"' '{print $4}')
+         wget -O mihomo https://github.com/MetaCubeX/mihomo/releases/download/$LATEST_VERSION/mihomo-linux-amd64
+         chmod +x mihomo
+         shell: bash
+
 
       - name: 🛠 确保 `rules/` 目录存在
         run: |
