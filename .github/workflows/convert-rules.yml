@@ -44,25 +44,21 @@ jobs:
           ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: bash
 
-      - name: 📦 打包 `.mrs` 文件
-        run: zip -r rules/mrs-release.zip rules/mrs/*
-        shell: bash
-
       - name: 🚀 生成 Release 版本号
         id: get_date
         run: |
           echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
 
-      - name: 🚀 发布 GitHub Release
+      - name: 🚀 发布 GitHub Release（上传 `.mrs` 文件）
         uses: softprops/action-gh-release@v1
         with:
-          files: rules/mrs-release.zip
+          files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件，而不是 `.zip`
           tag_name: ${{ env.TAG_NAME }}
           name: "规则更新 - ${{ env.TAG_NAME }}"
           body: |
             🚀 最新转换规则
             - 更新时间: ${{ env.TAG_NAME }}
-            - 文件: `.mrs` 规则集
+            - 直接上传 `.mrs` 规则集
           draft: false
           prerelease: false
