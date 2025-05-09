@@ -21,11 +21,10 @@ jobs:
         run: chmod +x config/mihomo
         shell: bash
 
-      - name: 🛠 确保 `rules/mrs/` 目录正确创建并赋权
+      - name: 🛠 确保 `rules/mrs/` 目录正确创建
         run: |
           mkdir -p rules/mrs
           chmod -R 777 rules/mrs
-          ls -l rules/mrs
         shell: bash
 
       - name: ⚙️ 运行 `.yaml` 转换（使用本地 Mihomo）
@@ -51,15 +50,22 @@ jobs:
           echo "TAG_NAME=$(date +'%Y%m%d')" >> $GITHUB_ENV
         shell: bash
 
-      - name: 🚀 发布 GitHub Release（上传 `.mrs` 文件）
+      - name: 🚀 发布 GitHub Release（包含 `.mrs` 直链）
         uses: softprops/action-gh-release@v1
         with:
           files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件
           tag_name: ${{ env.TAG_NAME }}
           name: "Mihomo - ${{ env.TAG_NAME }}"
           body: |
-            📌 Mihomo/Clash 规则整理
+            📌 **Mihomo/Clash 规则整理**
             - 更新时间: ${{ env.TAG_NAME }}
-            - 💦 Mihomo/Clash 收录[🐟漏网之鱼]未被 cn_domain(国内) 或 geolocation-!cn(国外) 收录的规则集，帮助您更精准地管理代理/直连设置。
+
+            💾 **规则下载（最新直链）**
+            - [域名直连规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/domain-direct.mrs)
+            - [域名代理规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/domain-proxy.mrs)
+            - [IP 直连规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/ip-direct.mrs)
+            - [IP 代理规则](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG_NAME }}/ip-proxy.mrs)
+
+            🐟 **Mihomo/Clash 收录[🐟漏网之鱼]未被 `cn_domain`（国内）或 `geolocation-!cn`（国外）收录的规则集**，帮助您更精准地管理代理/直连设置。
           draft: false
           prerelease: false
