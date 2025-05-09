@@ -1,4 +1,4 @@
-name: 自动转换并推送 `.mrs` 文件
+name: 自动转换并发布 Release 和更新 `main`
 
 on:
   schedule:
@@ -50,7 +50,7 @@ jobs:
           ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 `.mrs` 文件！" && exit 1)
         shell: bash
 
-      - name: 🚀 推送 `.mrs` 文件到 GitHub 仓库 `main` 分支
+      - name: 🚀 推送 `.mrs` 文件到 `main` 分支（支持 raw.githubusercontent.com）
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -58,3 +58,17 @@ jobs:
           git commit -m "🚀 更新 `.mrs` 文件 - ${{ env.UPDATE_DATE }}" || echo "⚠️ Git commit 失败，可能没有改动"
           git push origin main || echo "⚠️ Git 推送失败！"
         shell: bash
+
+      - name: 🚀 发布 GitHub Release（始终更新 `latest`）
+        uses: softprops/action-gh-release@v1
+        with:
+          files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件
+          tag_name: latest  # 🔄 始终覆盖 latest 这个 Release
+          name: "Mihomo - 最新版 (${{ env.UPDATE_DATE }})"
+          body: |
+            📌 **Mihomo/Clash 规则整理（始终保持最新）**
+            - 更新时间: **${{ env.UPDATE_DATE }}**
+          
+            🐟 **Mihomo/Clash 收录[🐟漏网之鱼]未被 `cn_domain`（国内）或 `geolocation-!cn`（国外）收录的规则集**，帮助您更精准地管理代理/直连设置。
+          draft: false
+          prerelease: false
