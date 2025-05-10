@@ -2,7 +2,7 @@ name: 自动转换并发布 Release 和更新 `main`
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # 每天运行一次
+    - cron: "0 6 * * *"  # 每天运行一次
   push:
     branches:
       - main
@@ -64,7 +64,7 @@ jobs:
         with:
           files: rules/mrs/*.mrs  # 🔄 直接上传 `.mrs` 文件
           tag_name: latest  # 🔄 始终覆盖 latest 这个 Release
-          name: "Mihomo(${{ env.UPDATE_DATE }})"
+          name: "Mihomo - (${{ env.UPDATE_DATE }})"
           body: |
             📌 **Mihomo/Clash 规则整理**
             - 更新时间: **${{ env.UPDATE_DATE }}**
