@@ -1,4 +1,11 @@
 payload:
+    - +.my-ip.cc
+    - +.ipapi.co
+    - +.yestool.org
+    - +.okex.org
+    - +.surfsharkdns.com
+    - +.nextcloud.com
+    - +.twilio.com
     - +.ip.sb
     - +.ad88.eu.org
     - +.kover.eu.org
