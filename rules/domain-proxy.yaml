@@ -1,6 +1,8 @@
 payload:
     - +.temp-number.com
     - +.qiji.im
+    - +.xtom.com
+    - +.unpkg.com
     - +.nebula-media.org
     - services.googleapis.cn
     - +.googleapis.cn
