@@ -1,4 +1,4 @@
-name: 自动转换并发布 Release 和更新 main
+name: convert-rules 规则集转换
 
 on:
   schedule:
