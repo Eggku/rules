@@ -2,7 +2,7 @@ name: 自动转换并发布 Release 和更新 main
 
 on:
   schedule:
-    - cron: "0 22 * * *"  # 每天运行一次
+    - cron: "0 22 * * *"  # 🚀 中国时间 06:00（UTC+8）
   push:
     branches:
       - main
@@ -38,15 +38,11 @@ jobs:
           config/mihomo convert-ruleset ipcidr yaml rules/ip-proxy.yaml rules/mrs/ip-proxy.mrs || echo "⚠️ ip-proxy 规则转换失败"
         shell: bash
 
-      - name: 📂 列出 .mrs 文件
-        run: ls -l rules/mrs || echo "⚠️ `rules/mrs` 目录为空，可能转换失败"
-        shell: bash
-
       - name: ✅ 确保 `.mrs` 文件已生成
         run: ls rules/mrs/*.mrs || (echo "⚠️ 错误：未找到转换后的 .mrs 文件！" && exit 1)
         shell: bash
 
-      - name: 🚀 推送 .mrs 文件到 main 分支（支持 raw.githubusercontent.com）
+      - name: 🚀 推送 `.mrs` 文件到 main 分支
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -55,16 +51,18 @@ jobs:
           git push origin main || echo "⚠️ Git 推送失败！"
         shell: bash
 
-      - name: 🚀 创建 Release ZIP（排除 `rules/`、`.github/workflows/` 和 `config/`）
+      - name: 🚀 删除旧的 `latest` Tag 并创建新的（自动刷新 Release 时间）
         run: |
-          zip -r release-package.zip . -x "rules/*" -x ".github/workflows/*" -x "config/*"
+          git tag -d latest || true
+          git tag latest
+          git push --force origin latest
         shell: bash
 
       - name: 🚀 发布 GitHub Release（始终更新 `latest`）
         uses: softprops/action-gh-release@v1
         with:
-          files: release-package.zip  # ✅ 仅上传这个 ZIP，确保排除 `rules/`、`.github/workflows/` 和 `config/`
-          tag_name: latest  # 🔄 始终覆盖 latest 这个 Release
+          files: rules/mrs/*.mrs  # ✅ 仅上传 `.mrs` 文件，避免额外 ZIP
+          tag_name: latest
           name: "Mihomo - (${{ env.UPDATE_DATE }})"
           body: |
             📌 Mihomo/Clash 规则整理
