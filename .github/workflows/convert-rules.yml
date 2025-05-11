@@ -2,7 +2,7 @@ name: 自动转换并发布 Release 和更新 main
 
 on:
   schedule:
-    - cron: "0 6 * * *"  # 每天运行一次
+    - cron: "0 22 * * *"  # 每天运行一次
   push:
     branches:
       - main
@@ -55,10 +55,15 @@ jobs:
           git push origin main || echo "⚠️ Git 推送失败！"
         shell: bash
 
+      - name: 🚀 创建 Release ZIP（排除 `rules/`、`.github/workflows/` 和 `config/`）
+        run: |
+          zip -r release-package.zip . -x "rules/*" -x ".github/workflows/*" -x "config/*"
+        shell: bash
+
       - name: 🚀 发布 GitHub Release（始终更新 `latest`）
         uses: softprops/action-gh-release@v1
         with:
-          files: rules/mrs/*.mrs  # 🔄 直接上传 .mrs 文件
+          files: release-package.zip  # ✅ 仅上传这个 ZIP，确保排除 `rules/`、`.github/workflows/` 和 `config/`
           tag_name: latest  # 🔄 始终覆盖 latest 这个 Release
           name: "Mihomo - (${{ env.UPDATE_DATE }})"
           body: |
