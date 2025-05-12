@@ -46,7 +46,7 @@
 
 📛 ip-direct.mrs        国内 IP 直连               # 匹配整个子网IP的通配写法，包含日常生活使用的IP。
 
-📛 ip-proxy.mrs         国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视域名。
+📛 ip-proxy.mrs         国外 IP 代理               # 匹配整个子网IP的通配写法，包含emby和其它影视IP。
 ```
 
 👽 Domain 规则示例：
